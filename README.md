@@ -14,7 +14,6 @@ because nw doesn't support AppIndicators yet.
 2. Opens links in your default browser
 3. Remembers which links you opened
 4. Shows Points/Comment count in a simple format
-5. 
 
 ##To-Do
 - Reload data every 5 minutes
@@ -23,6 +22,7 @@ because nw doesn't support AppIndicators yet.
 - Auto Start
 - Convert to a Python Module
 - Add a menu separator between news and preferences.
+- Try to convert right click to comments link
 
 ##Author Information
 - Abhay Rana <me@captnemo.in>
