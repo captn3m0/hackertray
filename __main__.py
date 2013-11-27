@@ -3,9 +3,14 @@
 import pygtk
 pygtk.require('2.0')
 import gtk
-import appindicator
+
 import requests
 import webbrowser
+
+try:
+    import appindicator
+except ImportError:
+    import appindicator_replacement as appindicator
 
 class HackerNewsApp:
 	def __init__(self):
