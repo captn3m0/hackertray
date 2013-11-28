@@ -11,5 +11,7 @@ setup(name='hackertray',
       install_requires=[
           'requests',
       ],
-      scripts=['bin/hackertray'],
+      entry_points={
+          'console_scripts': ['hackertray = hackertray:main'],
+      },
       zip_safe=False)
