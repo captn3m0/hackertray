@@ -14,6 +14,31 @@ because nw doesn't support AppIndicators yet.
 
 ![HackerTray Screenshot in elementaryOS](http://i.imgur.com/63l3qXV.png)
 
+##Installation
+HackerTray is distributed as a python package. Do the following to install:
+
+``` sh
+sudo pip install hackertray
+OR
+sudo easy_install hackertray
+OR
+#Download Source and cd to it
+sudo setup.py install
+```
+
+After that, you can run `hackertray` from anywhere and it will run. You can
+now add it to your OS dependent session autostart method. In Ubuntu, you can
+access it via: 
+
+1. System > Preferences > Sessions  
+(OR)
+2. System > Preferences > Startup Applications 
+
+depending on your Ubuntu Version. Or put it in `~/.config/openbox/autostart` 
+if you are running OpenBox. [Here](http://imgur.com/mnhIzDK) is how the 
+configuration should look like in Ubuntu and its derivatives.
+
+
 ##Features
 1. Minimalist Approach to HN
 2. Opens links in your default browser
