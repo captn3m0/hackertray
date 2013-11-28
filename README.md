@@ -23,7 +23,7 @@ OR
 sudo easy_install hackertray
 OR
 #Download Source and cd to it
-sudo setup.py install
+sudo python setup.py install
 ```
 
 After that, you can run `hackertray` from anywhere and it will run. You can
