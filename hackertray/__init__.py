@@ -65,6 +65,10 @@ class HackerNewsApp:
 		file.write(json.dumps(l))
 		gtk.main_quit()
 
+	def run(self):
+		gtk.main()
+		return 0
+
 	'''Opens the link in the web browser'''
 	def open(self, widget, event=None, data=None):
 		#We disconnect and reconnect the event in case we have
@@ -107,9 +111,5 @@ def getHomePage():
 	return r.json()
 
 def main():
-	gtk.main()
-	return 0
-
-if __name__ == "__main__":
 	indicator = HackerNewsApp()
-	main()
+	indicator.run()
