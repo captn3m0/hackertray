@@ -21,7 +21,6 @@ because nw doesn't support AppIndicators yet.
 - Ideally app-memory should be persistent (save on disk)
 - Auto Start
 - Convert to a Python Module
-- Add a menu separator between news and preferences.
 - Try to convert right click to comments link
 
 ##Author Information

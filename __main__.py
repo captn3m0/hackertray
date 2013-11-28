@@ -22,6 +22,10 @@ class HackerNewsApp:
 		self.menu = gtk.Menu()
 
 		# create items for the menu - labels, checkboxes, radio buttons and images are supported:
+		menuSeparator = gtk.SeparatorMenuItem()
+		menuSeparator.show()
+		self.menu.append(menuSeparator)
+
 		btnRefresh = gtk.MenuItem("Refresh")
 		btnRefresh.show()
 		btnRefresh.connect("activate", self.refresh)
