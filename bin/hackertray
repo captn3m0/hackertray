@@ -1,5 +1,0 @@
-#!/usr/bin/env python
-from hackertray import HackerNewsApp
-import hackertray
-indicator = HackerNewsApp()
-hackertray.main()
