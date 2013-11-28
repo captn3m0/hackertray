@@ -22,7 +22,7 @@ class HackerNewsApp:
 		self.menu = gtk.Menu()
 
 		# create items for the menu - labels, checkboxes, radio buttons and images are supported:
-		btnRefresh = gtk.MenuItem("Refresh This")
+		btnRefresh = gtk.MenuItem("Refresh")
 		btnRefresh.show()
 		btnRefresh.connect("activate", self.refresh)
 		self.menu.append(btnRefresh)
@@ -40,20 +40,26 @@ class HackerNewsApp:
 	def quit(self, widget, data=None):
 		gtk.main_quit()
 
-	def open(self, widget, data=None):
+	def open(self, widget, event=None, data=None):
+		#We disconnect and reconnect the event in case we have
+		#to set it to active and we don't want the signal to be processed
+		if(widget.get_active() == False):
+			widget.disconnect(widget.signal_id)
+			widget.set_active(True)
+			widget.signal_id = widget.connect('activate', self.open)
 		webbrowser.open(widget.url)
 
 	def addItem(self, item):
 		i = gtk.CheckMenuItem("("+str(item['points']).zfill(3)+"/"+str(item['comments_count']).zfill(3)+")    "+item['title'])
 		i.url = item['url']
-		i.connect('activate', self.open)
+		i.signal_id = i.connect('activate', self.open)
 		self.menu.prepend(i)
 		i.show()
 
 	def refresh(self, widget=None, data=None):
 		self.data = reversed(getHomePage()[0:15]);
 		for i in self.menu.get_children():
-			if(i.__class__.__name__=="CheckMenuItem"):
+			if(hasattr(i,'url')):
 				self.menu.remove(i)
 		for i in self.data:
 			self.addItem(i)
