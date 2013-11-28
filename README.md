@@ -3,8 +3,8 @@ HackerTray
 
 HackerTray is a simple [Hacker News](https://news.ycombinator.com/) Linux application
 that lets you view top HN stories in your System Tray. It relies on appindicator, so
-it is not guaranteed to work on all systems. It also provides a StatusIcon fallback 
-but it has not been tested.
+it is not guaranteed to work on all systems. It also provides a Gtk StatusIcon fallback
+in case AppIndicator is not available.
 
 The inspiration for this came from [Hacker Bar](http://hackerbarapp.com), which is 
 Mac-only. I tried to port it to `node-webkit`, but had to do it in Python instead
@@ -38,6 +38,14 @@ depending on your Ubuntu Version. Or put it in `~/.config/openbox/autostart`
 if you are running OpenBox. [Here](http://imgur.com/mnhIzDK) is how the 
 configuration should look like in Ubuntu and its derivatives.
 
+###Upgrade
+The latest stable version is always the one [available on pip](https://pypi.python.org/pypi/hackertray/).
+You can check which version you have installed with `pip freeze | grep hackertray`.
+
+To upgrade, run `pip install -U hackertray`. In some cases (Ubuntu), you might
+need to clear the pip cache before upgrading:
+
+`sudo rm -rf /tmp/pip-build-root/hackertray`
 
 ##Features
 1. Minimalist Approach to HN
@@ -50,7 +58,7 @@ configuration should look like in Ubuntu and its derivatives.
 - Try to convert right click to comments link
 
 ##Author Information
-- Abhay Rana <me@captnemo.in>
+- Abhay Rana (<me@captnemo.in>)
 
 ## Donating
 Support this project and [others by captn3m0][gittip] via [gittip][].
