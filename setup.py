@@ -8,6 +8,8 @@ setup(name='hackertray',
       author_email='me@captnemo.in',
       license='MIT',
       packages=['hackertray'],
+      package_data={'hackertray': ['../images/hacker-tray.png']},
+      include_package_data=True,
       install_requires=[
           'requests',
       ],
