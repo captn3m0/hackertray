@@ -17,8 +17,6 @@ except ImportError:
 
 class HackerNewsApp:
 	def __init__(self):
-
-		print "Loading HackerTray"
 		#Load the database
 		home = expanduser("~")
 		with open(home+'/.hackertray.json', 'a+') as content_file:
@@ -92,7 +90,7 @@ class HackerNewsApp:
 
 	'''Refreshes the menu '''
 	def refresh(self, widget=None, data=None):
-		data = reversed(self.getHomePage()[0:20]);
+		data = reversed(getHomePage()[0:20]);
 		#Remove all the current stories
 		for i in self.menu.get_children():
 			if(hasattr(i,'url')):
@@ -103,11 +101,15 @@ class HackerNewsApp:
 		#Call every 5 minutes
 		gtk.timeout_add(5*60*1000, self.refresh)
 
-	'''Returns all the news stories from homepage'''
-	def getHomePage():
-		r = requests.get('https://node-hnapi.herokuapp.com/news')
-		return r.json()
+'''Returns all the news stories from homepage'''
+def getHomePage():
+	r = requests.get('https://node-hnapi.herokuapp.com/news')
+	return r.json()
 
-def main()
+def main():
 	gtk.main()
 	return 0
+
+if __name__ == "__main__":
+	indicator = HackerNewsApp()
+	main()

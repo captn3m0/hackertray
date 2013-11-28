@@ -22,7 +22,6 @@ because nw doesn't support AppIndicators yet.
 
 ##To-Do
 - Auto Start
-- Convert to a Python Module
 - Try to convert right click to comments link
 
 ##Author Information
