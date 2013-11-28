@@ -16,7 +16,6 @@ because nw doesn't support AppIndicators yet.
 4. Shows Points/Comment count in a simple format
 
 ##To-Do
-- Reload data every 5 minutes
 - Implement a way to remember which stories have been read
 - Ideally app-memory should be persistent (save on disk)
 - Auto Start

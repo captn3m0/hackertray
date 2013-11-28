@@ -63,13 +63,14 @@ class HackerNewsApp:
 		i.show()
 
 	def refresh(self, widget=None, data=None):
-		self.data = reversed(getHomePage()[0:15]);
+		self.data = reversed(getHomePage()[0:20]);
 		for i in self.menu.get_children():
 			if(hasattr(i,'url')):
 				self.menu.remove(i)
 		for i in self.data:
 			self.addItem(i)
-
+		#Call every 5 minutes
+		gtk.timeout_add(5*60*1000, self.refresh)
 
 def getHomePage():
 	r = requests.get('https://node-hnapi.herokuapp.com/news')
