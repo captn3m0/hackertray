@@ -83,6 +83,9 @@ class Indicator:
 		else:
 			self.icon.set_from_file(self.active_icon)
 	
+	def set_label(self, label):
+		return
+	
 	def set_icon(self, icon):
 		
 		# Set the new icon
