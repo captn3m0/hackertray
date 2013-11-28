@@ -10,6 +10,10 @@ The inspiration for this came from [Hacker Bar](http://hackerbarapp.com), which 
 Mac-only. I tried to port it to `node-webkit`, but had to do it in Python instead
 because nw doesn't support AppIndicators yet.
 
+##Screenshot
+
+![HackerTray Screenshot in elementaryOS](http://i.imgur.com/63l3qXV.png)
+
 ##Features
 1. Minimalist Approach to HN
 2. Opens links in your default browser
