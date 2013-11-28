@@ -54,6 +54,8 @@ class HackerNewsApp:
 		webbrowser.open(widget.url)
 
 	def addItem(self, item):
+		if(item['points'] == 0 or item['points'] == None): #This is in the case of YC Job Postings, which we skip
+			return
 		i = gtk.CheckMenuItem("("+str(item['points']).zfill(3)+"/"+str(item['comments_count']).zfill(3)+")    "+item['title'])
 		i.url = item['url']
 		i.signal_id = i.connect('activate', self.open)
