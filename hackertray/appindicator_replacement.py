@@ -25,8 +25,8 @@ STATUS_ATTENTION = 1
 
 # Locations to search for the given icon
 search_locations = [ os.path.join(os.path.dirname(sys.executable), "images"),
-                     os.path.join(os.path.dirname(sys.path[0]), "images"),
-                     os.path.join(os.path.dirname(sys.path[0]), "../images"),
+                     os.path.join(os.path.dirname(__file__), "images"),
+                     os.path.join(os.path.dirname(__file__), "../images"),
                      '/usr/share/pixmaps' ]
 
 def get_icon_filename(icon_name):
