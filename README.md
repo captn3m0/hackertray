@@ -16,8 +16,6 @@ because nw doesn't support AppIndicators yet.
 4. Shows Points/Comment count in a simple format
 
 ##To-Do
-- Implement a way to remember which stories have been read
-- Ideally app-memory should be persistent (save on disk)
 - Auto Start
 - Convert to a Python Module
 - Try to convert right click to comments link
