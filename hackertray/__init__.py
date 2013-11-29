@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
-import pygtk
-pygtk.require('2.0')
-import gtk
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
 import requests
 import webbrowser
@@ -33,24 +33,24 @@ class HackerNewsApp:
 		self.ind.set_label("Y")
 
 		# create a menu
-		self.menu = gtk.Menu()
+		self.menu = Gtk.Menu()
 
 		# create items for the menu - refresh, quit and a separator
-		menuSeparator = gtk.SeparatorMenuItem()
+		menuSeparator = Gtk.SeparatorMenuItem()
 		menuSeparator.show()
 		self.menu.append(menuSeparator)
 
-		btnAbout = gtk.MenuItem("About")
+		btnAbout = Gtk.MenuItem("About")
 		btnAbout.show()
 		btnAbout.connect("activate", self.showAbout)
 		self.menu.append(btnAbout)
 
-		btnRefresh = gtk.MenuItem("Refresh")
+		btnRefresh = Gtk.MenuItem("Refresh")
 		btnRefresh.show()
 		btnRefresh.connect("activate", self.refresh)
 		self.menu.append(btnRefresh)
 
-		btnQuit = gtk.MenuItem("Quit")
+		btnQuit = Gtk.MenuItem("Quit")
 		btnQuit.show()
 		btnQuit.connect("activate", self.quit)
 		self.menu.append(btnQuit)
@@ -72,10 +72,10 @@ class HackerNewsApp:
 		#truncate the file
 		file = open(home+'/.hackertray.json', 'w+')
 		file.write(json.dumps(l))
-		gtk.main_quit()
+		Gtk.main_quit()
 
 	def run(self):
-		gtk.main()
+		Gtk.main()
 		return 0
 
 	'''Opens the link in the web browser'''
@@ -93,7 +93,7 @@ class HackerNewsApp:
 	def addItem(self, item):
 		if(item['points'] == 0 or item['points'] == None): #This is in the case of YC Job Postings, which we skip
 			return
-		i = gtk.CheckMenuItem("("+str(item['points']).zfill(3)+"/"+str(item['comments_count']).zfill(3)+")    "+item['title'])
+		i = Gtk.CheckMenuItem("("+str(item['points']).zfill(3)+"/"+str(item['comments_count']).zfill(3)+")    "+item['title'])
 		i.set_active(item['id'] in self.db)
 		i.url = item['url']
 		i.signal_id = i.connect('activate', self.open)
@@ -112,7 +112,7 @@ class HackerNewsApp:
 		for i in data:
 			self.addItem(i)
 		#Call every 5 minutes
-		gtk.timeout_add(5*60*1000, self.refresh)
+		Gtk.timeout_add(5*60*1000, self.refresh)
 
 '''Returns all the news stories from homepage'''
 def getHomePage():
