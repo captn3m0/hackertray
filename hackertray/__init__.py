@@ -15,6 +15,8 @@ try:
 except ImportError:
     import appindicator_replacement as appindicator
 
+from hackernews import HackerNews
+
 class HackerNewsApp:
 	def __init__(self):
 		#Load the database
@@ -103,7 +105,7 @@ class HackerNewsApp:
 
 	'''Refreshes the menu '''
 	def refresh(self, widget=None, data=None):
-		data = reversed(getHomePage()[0:20]);
+		data = reversed(HackerNews.getHomePage()[0:20]);
 		#Remove all the current stories
 		for i in self.menu.get_children():
 			if(hasattr(i,'url')):
@@ -113,11 +115,6 @@ class HackerNewsApp:
 			self.addItem(i)
 		#Call every 5 minutes
 		gtk.timeout_add(5*60*1000, self.refresh)
-
-'''Returns all the news stories from homepage'''
-def getHomePage():
-	r = requests.get('https://node-hnapi.herokuapp.com/news')
-	return r.json()
 
 def main():
 	indicator = HackerNewsApp()
