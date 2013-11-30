@@ -72,8 +72,8 @@ class HackerNewsApp:
 		l=list(self.db)
 		home = expanduser("~")
 		#truncate the file
-		file = open(home+'/.hackertray.json', 'w+')
-		file.write(json.dumps(l))
+		with open(home+'/.hackertray.json', 'w+') as file:
+			file.write(json.dumps(l))
 		gtk.main_quit()
 
 	def run(self):
