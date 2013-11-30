@@ -21,5 +21,3 @@ class HackerNews:
 				return r.json()
 			except ValueError:
 				continue;
-			finally:
-				print i

@@ -115,7 +115,7 @@ class HackerNewsApp:
 			self.addItem(i)
 		#Call every 5 minutes
 		if no_timer==False:
-			gtk.timeout_add(10*1000, self.refresh)
+			gtk.timeout_add(10*60*1000, self.refresh)
 
 def main():
 	indicator = HackerNewsApp()
