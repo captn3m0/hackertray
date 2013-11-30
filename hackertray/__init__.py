@@ -49,7 +49,7 @@ class HackerNewsApp:
 
 		btnRefresh = gtk.MenuItem("Refresh")
 		btnRefresh.show()
-		btnRefresh.connect("activate", self.refresh)
+		btnRefresh.connect("activate", self.refresh, True) #the last parameter is for not running the timer
 		self.menu.append(btnRefresh)
 
 		btnQuit = gtk.MenuItem("Quit")
@@ -104,7 +104,7 @@ class HackerNewsApp:
 		i.show()
 
 	'''Refreshes the menu '''
-	def refresh(self, widget=None, data=None):
+	def refresh(self, widget=None, no_timer=False):
 		data = reversed(HackerNews.getHomePage()[0:20]);
 		#Remove all the current stories
 		for i in self.menu.get_children():
@@ -114,7 +114,8 @@ class HackerNewsApp:
 		for i in data:
 			self.addItem(i)
 		#Call every 5 minutes
-		gtk.timeout_add(5*60*1000, self.refresh)
+		if no_timer==False:
+			gtk.timeout_add(5*60*1000, self.refresh)
 
 def main():
 	indicator = HackerNewsApp()
