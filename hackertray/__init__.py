@@ -41,6 +41,13 @@ class HackerNewsApp:
 		menuSeparator = gtk.SeparatorMenuItem()
 		menuSeparator.show()
 		self.menu.append(menuSeparator)
+		
+		#open hacker news 
+		btnHnLink = gtk.MenuItem("Hacker News")
+                btnHnLink.show()
+                btnHnLink.connect("activate", self.showHnLink)
+                self.menu.append(btnHnLink)
+
 
 		btnAbout = gtk.MenuItem("About")
 		btnAbout.show()
@@ -65,6 +72,9 @@ class HackerNewsApp:
 	'''Handle the about btn'''
 	def showAbout(self, widget):
 		webbrowser.open("https://github.com/captn3m0/hackertray/")
+
+	def showHnLink(self, widget):
+                webbrowser.open("https://news.ycombinator.com/")
 
 	''' Handler for the quit button'''
 	#ToDo: Handle keyboard interrupt properly
