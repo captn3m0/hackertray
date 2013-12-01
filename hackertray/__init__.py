@@ -9,6 +9,7 @@ import webbrowser
 import json
 import argparse
 from os.path import expanduser
+import signal
 
 try:
     import appindicator
@@ -84,6 +85,7 @@ class HackerNewsApp:
 		gtk.main_quit()
 
 	def run(self):
+		signal.signal(signal.SIGINT, self.quit)
 		gtk.main()
 		return 0
 
