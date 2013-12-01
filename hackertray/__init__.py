@@ -7,13 +7,20 @@ import gtk
 import requests
 import webbrowser
 import json
-
+import argparse
 from os.path import expanduser
 
 try:
     import appindicator
 except ImportError:
     import appindicator_replacement as appindicator
+
+##This is to get --version to work
+try:
+	import pkg_resources
+	__version = pkg_resources.require("hackertray")[0].version
+except ImportError, e:
+	__version = "Can't read version number."
 
 from hackernews import HackerNews
 
@@ -118,5 +125,8 @@ class HackerNewsApp:
 			gtk.timeout_add(10*60*1000, self.refresh)
 
 def main():
+	parser = argparse.ArgumentParser(description='Hacker News in your System Tray')
+	parser.add_argument('--version', action='version', version=__version)
+	parser.parse_args()
 	indicator = HackerNewsApp()
 	indicator.run()
