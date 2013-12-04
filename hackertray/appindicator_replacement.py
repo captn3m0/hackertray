@@ -16,6 +16,8 @@ import gobject
 import os
 import sys
 
+from pkg_resources import resource_filename
+
 # Types
 CATEGORY_APPLICATION_STATUS = 0
 
@@ -24,25 +26,11 @@ STATUS_ACTIVE    = 0
 STATUS_ATTENTION = 1
 
 # Locations to search for the given icon
-search_locations = [ os.path.join(os.path.dirname(sys.executable), "images"),
-                     os.path.join(os.path.dirname(__file__), "images"),
-                     os.path.join(os.path.dirname(__file__), "../images"),
-                     '/usr/share/pixmaps' ]
 
 def get_icon_filename(icon_name):
 	
 	# Determine where the icon is
-	global search_locations
-	
-	for folder in search_locations:
-		
-		filename = os.path.join(folder, icon_name + ".png")
-		
-		if os.path.isfile(filename):
-			return filename
-	
-	return None
-		
+	return os.path.abspath(resource_filename('hackertray.data', 'hacker-tray.png'))
 
 # The main class
 class Indicator:
@@ -84,6 +72,7 @@ class Indicator:
 			self.icon.set_from_file(self.active_icon)
 	
 	def set_label(self, label):
+		self.icon.set_title(label)
 		return
 	
 	def set_icon(self, icon):
