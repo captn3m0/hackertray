@@ -3,6 +3,7 @@ HackerTray
 
 [![HackerTray on crate.io](https://pypip.in/v/hackertray/badge.png)](https://crate.io/packages/hackertray/)
 [![HackerTray on PyPi](https://pypip.in/d/hackertray/badge.png)](https://pypi.python.org/pypi/hackertray/)
+[![Build Status](https://travis-ci.org/captn3m0/hackertray.png?branch=master)](https://travis-ci.org/captn3m0/hackertray)
 
 HackerTray is a simple [Hacker News](https://news.ycombinator.com/) Linux application
 that lets you view top HN stories in your System Tray. It relies on appindicator, so
