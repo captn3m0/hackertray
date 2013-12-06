@@ -26,6 +26,7 @@ except ImportError, e:
 from hackernews import HackerNews
 
 class HackerNewsApp:
+	HN_URL_PREFIX="https://news.ycombinator.com/item?id="
 	def __init__(self):
 		#Load the database
 		home = expanduser("~")
@@ -45,10 +46,18 @@ class HackerNewsApp:
 		# create a menu
 		self.menu = gtk.Menu()
 
+		#The default state is false, and it toggles when you click on it
+		self.commentState = False 
+		
 		# create items for the menu - refresh, quit and a separator
 		menuSeparator = gtk.SeparatorMenuItem()
 		menuSeparator.show()
 		self.menu.append(menuSeparator)
+
+		btnComments = gtk.CheckMenuItem("Show Comments")
+		btnComments.show()
+		btnComments.connect("activate", self.toggleComments)
+		self.menu.append(btnComments)
 
 		btnAbout = gtk.MenuItem("About")
 		btnAbout.show()
@@ -69,6 +78,10 @@ class HackerNewsApp:
 
 		self.ind.set_menu(self.menu)
 		self.refresh()
+
+	'''Whether comments page is opened or not'''
+	def toggleComments(self, widget):
+		self.commentState = not self.commentState
 
 	'''Handle the about btn'''
 	def showAbout(self, widget):
@@ -99,6 +112,8 @@ class HackerNewsApp:
 			widget.signal_id = widget.connect('activate', self.open)
 		self.db.add(widget.item_id)
 		webbrowser.open(widget.url)
+		if(self.commentState):
+			webbrowser.open(self.HN_URL_PREFIX+widget.hn_id)
 
 	'''Adds an item to the menu'''
 	def addItem(self, item):
@@ -108,6 +123,7 @@ class HackerNewsApp:
 		i.set_active(item['id'] in self.db)
 		i.url = item['url']
 		i.signal_id = i.connect('activate', self.open)
+		i.hn_id = item['id']
 		i.item_id = item['id']
 		self.menu.prepend(i)
 		i.show()
