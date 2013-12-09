@@ -43,7 +43,6 @@ class HackerNewsApp:
 		# create an indicator applet
 		self.ind = appindicator.Indicator ("Hacker Tray", "hacker-tray", appindicator.CATEGORY_APPLICATION_STATUS)
 		self.ind.set_status (appindicator.STATUS_ACTIVE)
-		self.ind.set_label("Y")
 		self.ind.set_icon(get_icon_filename("hacker-tray.png"))
 
 		# create a menu
