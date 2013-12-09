@@ -1,6 +1,7 @@
 from setuptools import setup
 from setuptools import find_packages
 import sys
+import glob
 
 requirements = ['requests']
 if sys.version_info < (2, 7):
@@ -19,6 +20,10 @@ setup(name='hackertray',
       package_data={
         'hackertray.data':['hacker-tray.png']
       },
+      include_package_data = True,
+      data_files = [
+        ('share/hackertray/', glob.glob('hackertray/data/*'))
+      ],
       install_requires=[
         'requests>=2.0',
       ],

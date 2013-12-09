@@ -8,7 +8,7 @@ import requests
 import webbrowser
 import json
 import argparse
-from os.path import expanduser
+from os.path import expanduser, join, extsep
 import signal
 
 try:
@@ -25,6 +25,15 @@ except ImportError, e:
 
 from hackernews import HackerNews
 
+def res_pth(fn):
+    res = join('hackertray/data', extsep.join([fn, 'png']))
+    try:
+        from pkg_resources import resource_filename, Requirement
+        return resource_filename(Requirement.parse('hackertray'), res)
+    except ImportError, e:
+        # just return what we got in the first place
+        return fn
+
 class HackerNewsApp:
 	HN_URL_PREFIX="https://news.ycombinator.com/item?id="
 	def __init__(self):
@@ -39,16 +48,16 @@ class HackerNewsApp:
 				self.db = set()
 
 		# create an indicator applet
-		self.ind = appindicator.Indicator ("Hacker Tray", "hacker-tray", appindicator.CATEGORY_APPLICATION_STATUS)
+		self.ind = appindicator.Indicator ("Hacker Tray", res_pth("hacker-tray"), appindicator.CATEGORY_APPLICATION_STATUS)
 		self.ind.set_status (appindicator.STATUS_ACTIVE)
-		self.ind.set_label("Y")
+		#self.ind.set_label("Y")
 
 		# create a menu
 		self.menu = gtk.Menu()
 
 		#The default state is false, and it toggles when you click on it
-		self.commentState = False 
-		
+		self.commentState = False
+
 		# create items for the menu - refresh, quit and a separator
 		menuSeparator = gtk.SeparatorMenuItem()
 		menuSeparator.show()
@@ -148,3 +157,6 @@ def main():
 	parser.parse_args()
 	indicator = HackerNewsApp()
 	indicator.run()
+
+if __name__ == '__main__':
+    main()
