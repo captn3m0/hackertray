@@ -16,6 +16,8 @@ try:
 except ImportError:
     import appindicator_replacement as appindicator
 
+from appindicator_replacement import get_icon_filename
+
 ##This is to get --version to work
 try:
 	import pkg_resources
@@ -42,6 +44,7 @@ class HackerNewsApp:
 		self.ind = appindicator.Indicator ("Hacker Tray", "hacker-tray", appindicator.CATEGORY_APPLICATION_STATUS)
 		self.ind.set_status (appindicator.STATUS_ACTIVE)
 		self.ind.set_label("Y")
+		self.ind.set_icon(get_icon_filename("hacker-tray.png"))
 
 		# create a menu
 		self.menu = gtk.Menu()
