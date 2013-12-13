@@ -1,10 +1,12 @@
+import sys
+
 from setuptools import setup
 from setuptools import find_packages
-import sys
+
 
 requirements = ['requests']
 if sys.version_info < (2, 7):
-  requirements.append('argparse')
+    requirements.append('argparse')
 
 setup(name='hackertray',
       version='1.9.5',
@@ -17,12 +19,12 @@ setup(name='hackertray',
       license='MIT',
       packages=find_packages(),
       package_data={
-        'hackertray.data':['hacker-tray.png']
+          'hackertray.data': ['hacker-tray.png']
       },
       install_requires=[
-        'requests>=2.0',
+          'requests>=2.0',
       ],
       entry_points={
-        'console_scripts': ['hackertray = hackertray:main'],
+          'console_scripts': ['hackertray = hackertray:main'],
       },
       zip_safe=False)
