@@ -32,7 +32,7 @@ from hackernews import HackerNews
 class HackerNewsApp:
     HN_URL_PREFIX = "https://news.ycombinator.com/item?id="
 
-    def __init__(self):
+    def __init__(self, comments):
         #Load the database
         home = expanduser("~")
         with open(home + '/.hackertray.json', 'a+') as content_file:
@@ -52,7 +52,7 @@ class HackerNewsApp:
         self.menu = gtk.Menu()
 
         #The default state is false, and it toggles when you click on it
-        self.commentState = False
+        self.commentState = comments
 
         # create items for the menu - refresh, quit and a separator
         menuSeparator = gtk.SeparatorMenuItem()
@@ -61,6 +61,7 @@ class HackerNewsApp:
 
         btnComments = gtk.CheckMenuItem("Show Comments")
         btnComments.show()
+        btnComments.set_active(comments)
         btnComments.connect("activate", self.toggleComments)
         self.menu.append(btnComments)
 
@@ -162,7 +163,9 @@ class HackerNewsApp:
 
 def main():
     parser = argparse.ArgumentParser(description='Hacker News in your System Tray')
-    parser.add_argument('--version', action='version', version=__version)
-    parser.parse_args()
-    indicator = HackerNewsApp()
+    parser.add_argument('-v','--version', action='version', version=__version)
+    parser.add_argument('-c','--comments', dest='comments',action='store_true', help="Load the HN comments link for the article as well")
+    parser.set_defaults(comments=False)
+    args = parser.parse_args()
+    indicator = HackerNewsApp(args.comments)
     indicator.run()

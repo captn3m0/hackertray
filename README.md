@@ -1,7 +1,7 @@
 HackerTray
 ==========
 
-[![HackerTray on crate.io](https://pypip.in/v/hackertray/badge.png)](https://crate.io/packages/hackertray/)
+[![HackerTray on PyPi](https://pypip.in/v/hackertray/badge.png)](https://pypi.python.org/pypi/hackertray/)
 [![HackerTray on PyPi](https://pypip.in/d/hackertray/badge.png)](https://pypi.python.org/pypi/hackertray/)
 [![Build Status](https://travis-ci.org/captn3m0/hackertray.png?branch=master)](https://travis-ci.org/captn3m0/hackertray)
 
@@ -56,10 +56,6 @@ need to clear the pip cache before upgrading:
 2. Opens links in your default browser
 3. Remembers which links you opened
 4. Shows Points/Comment count in a simple format
-
-##To-Do
-- Auto Start
-- Try to convert right click to comments link
 
 ##Author Information
 - Abhay Rana (<me@captnemo.in>)
