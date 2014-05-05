@@ -40,7 +40,7 @@ access it via:
 
 depending on your Ubuntu Version. Or put it in `~/.config/openbox/autostart` 
 if you are running OpenBox. [Here](http://imgur.com/mnhIzDK) is how the 
-configuration should look like in Ubuntu and its derivatives.
+configuration should look like in Ubuntu and its derivatives. 
 
 ###Upgrade
 The latest stable version is always the one [available on pip](https://pypi.python.org/pypi/hackertray/).
@@ -56,6 +56,13 @@ need to clear the pip cache before upgrading:
 2. Opens links in your default browser
 3. Remembers which links you opened
 4. Shows Points/Comment count in a simple format
+
+###Troubleshooting
+
+If the app indicator fails to show in Ubuntu versions, consider installing 
+python-appindicator with
+
+`sudo apt-get install python-appindicator`
 
 ##Author Information
 - Abhay Rana (<me@captnemo.in>)
