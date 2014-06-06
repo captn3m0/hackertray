@@ -76,4 +76,4 @@ Support this project and [others by captn3m0][gittip] via [gittip][].
 [gittip]: https://www.gittip.com/captn3m0/
 
 ##Licence
-Licenced under the MIT Licence
+Licenced under the [MIT Licence](http://nemo.mit-license.org/).
