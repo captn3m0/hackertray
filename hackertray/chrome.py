@@ -1,11 +1,12 @@
 import sqlite3
 import shutil
+import os
 
 class Chrome:
     @staticmethod
     def search(urls, config_folder_path):
-        HackerNews.setup()
-        conn = sqlite3.connect('/tmp/chrome')
+        Chrome.setup(config_folder_path)
+        conn = sqlite3.connect('/tmp/hackertray.chrome')
         db = conn.cursor() 
         result = []
         for url in urls:
@@ -14,7 +15,8 @@ class Chrome:
                 result.append(False)
             else:
                 result.append(True)
+        os.remove('/tmp/hackertray.chrome')
         return result
     @staticmethod
-    def setup():
+    def setup(config_folder_path):
         shutil.copyfile(config_folder_path+'/History', '/tmp/hackertray.chrome')
