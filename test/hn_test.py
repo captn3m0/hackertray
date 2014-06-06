@@ -1,6 +1,5 @@
 import unittest
-from hackernews import HackerNews
-
+from hackertray import HackerNews
 
 class HNTest(unittest.TestCase):
     def runTest(self):

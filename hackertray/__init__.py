@@ -27,7 +27,7 @@ except ImportError:
     __version = "Can't read version number."
 
 from hackernews import HackerNews
-
+from chrome import Chrome
 
 class HackerNewsApp:
     HN_URL_PREFIX = "https://news.ycombinator.com/item?id="
