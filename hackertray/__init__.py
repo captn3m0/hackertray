@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 
-import pygtk
+try:
+    import pygtk
 
-pygtk.require('2.0')
-import gtk
+    pygtk.require('2.0')
+    import gtk
 
-import webbrowser
+    import webbrowser
+except ImportError:
+    pass
 import json
 import argparse
 from os.path import expanduser
