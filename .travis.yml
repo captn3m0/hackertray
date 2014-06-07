@@ -6,4 +6,4 @@ install:
  - pip install requests
  - pip install nose
 # command to run tests, e.g. python setup.py test
-script:  nosetests --exclude=hackertray
+script:  nosetests --nocapture
