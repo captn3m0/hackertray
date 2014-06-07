@@ -19,4 +19,5 @@ class Chrome:
         return result
     @staticmethod
     def setup(config_folder_path):
-        shutil.copyfile(config_folder_path+'/History', '/tmp/hackertray.chrome')
+        file_name = os.path.abspath(config_folder_path+'/History')
+        shutil.copyfile(file_name, '/tmp/hackertray.chrome')

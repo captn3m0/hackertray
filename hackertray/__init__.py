@@ -36,7 +36,7 @@ from chrome import Chrome
 class HackerNewsApp:
     HN_URL_PREFIX = "https://news.ycombinator.com/item?id="
 
-    def __init__(self, comments):
+    def __init__(self, args):
         #Load the database
         home = expanduser("~")
         with open(home + '/.hackertray.json', 'a+') as content_file:
@@ -56,7 +56,7 @@ class HackerNewsApp:
         self.menu = gtk.Menu()
 
         #The default state is false, and it toggles when you click on it
-        self.commentState = comments
+        self.commentState = args.comments
 
         # create items for the menu - refresh, quit and a separator
         menuSeparator = gtk.SeparatorMenuItem()
@@ -65,7 +65,7 @@ class HackerNewsApp:
 
         btnComments = gtk.CheckMenuItem("Show Comments")
         btnComments.show()
-        btnComments.set_active(comments)
+        btnComments.set_active(args.comments)
         btnComments.connect("activate", self.toggleComments)
         self.menu.append(btnComments)
 
@@ -88,7 +88,7 @@ class HackerNewsApp:
         self.menu.show()
 
         self.ind.set_menu(self.menu)
-        self.refresh()
+        self.refresh(chrome_data_directory=args.chrome)
 
     def toggleComments(self, widget):
         """Whether comments page is opened or not"""
@@ -139,7 +139,9 @@ class HackerNewsApp:
         i = gtk.CheckMenuItem(
             "(" + str(item['points']).zfill(3) + "/" + str(item['comments_count']).zfill(3) + ")    " + item['title'])
 
-        i.set_active(item['id'] in self.db)
+        visited = item['history'] or item['id'] in self.db
+
+        i.set_active(visited)
         i.url = item['url']
         i.signal_id = i.connect('activate', self.open)
         i.hn_id = item['id']
@@ -147,9 +149,13 @@ class HackerNewsApp:
         self.menu.prepend(i)
         i.show()
 
-    def refresh(self, widget=None, no_timer=False):
+    def refresh(self, widget=None, no_timer=False, chrome_data_directory=None):
         """Refreshes the menu """
-        data = reversed(HackerNews.getHomePage()[0:20])
+        data = list(reversed(HackerNews.getHomePage()[0:20]))
+
+        if(chrome_data_directory):
+            urls = [item['url'] for item in data]
+            searchResults = Chrome.search(urls, chrome_data_directory)
 
         #Remove all the current stories
         for i in self.menu.get_children():
@@ -157,19 +163,24 @@ class HackerNewsApp:
                 self.menu.remove(i)
 
         #Add back all the refreshed news
-        for i in data:
-            self.addItem(i)
+        for index, item in enumerate(data):
+            if(chrome_data_directory):
+                item['history'] = searchResults[index]
+            else:
+                item['history'] = False
+            self.addItem(item)
 
         #Call every 5 minutes
         if not no_timer:
-            gtk.timeout_add(10 * 60 * 1000, self.refresh)
+            gtk.timeout_add(10 * 60 * 1000, self.refresh, chrome_data_directory)
 
 
 def main():
     parser = argparse.ArgumentParser(description='Hacker News in your System Tray')
     parser.add_argument('-v','--version', action='version', version=__version)
     parser.add_argument('-c','--comments', dest='comments',action='store_true', help="Load the HN comments link for the article as well")
+    parser.add_argument('--chrome', dest='chrome', help="Specify a Google Chrome Profile directory to use for matching chrome history")
     parser.set_defaults(comments=False)
     args = parser.parse_args()
-    indicator = HackerNewsApp(args.comments)
+    indicator = HackerNewsApp(args)
     indicator.run()
