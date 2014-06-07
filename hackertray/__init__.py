@@ -27,7 +27,7 @@ try:
     import pkg_resources
 
     __version = pkg_resources.require("hackertray")[0].version
-except ImportError:
+except:
     __version = "Can't read version number."
 
 from hackernews import HackerNews
