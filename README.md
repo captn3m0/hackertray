@@ -57,6 +57,16 @@ HackerTray accepts its various options via the command line. Run `hackertray -h`
 1. `-c`: Enables comments support. Clicking on links will also open the comments page on HN. Can be switched off via the UI, but the setting is not remembered.
 2. `--chrome PROFILE_PATH`: Specifying a profile path to a chrome directory will make HackerTray read the Chrome History file to mark links as read. Links are checked once every 5 minutes, which is when the History file is copied (to override the lock in case Chrome is open), searched using sqlite and deleted. This feature is still experimental.
 
+###Google Chrome Profile Path
+
+Where your Profile is stored depends on which version of chrome you are using:
+
+- `google-chrome-stable`: `~/.config/google-chrome/Default/`
+- `google-chrome-unstable`: `~/.config/google-chrome-unstable/Default/`
+- `chromium`: `~/.config/chromium/Default/`
+
+Replace `Default` with `Profile 1`, `Profile 2` or so on if you use multiple profiles on Chrome. Note that the `--chrome` option accepts a `PROFILE_PATH`, not the History file itself. Also note that sometimes `~` might not be set, so you might need to use the complete path (such as `/home/nemo/.config/google-chrome/Default/`).
+
 ##Features
 1. Minimalist Approach to HN
 2. Opens links in your default browser
@@ -70,6 +80,15 @@ If the app indicator fails to show in Ubuntu versions, consider installing
 python-appindicator with
 
 `sudo apt-get install python-appindicator`
+
+###Development
+
+To develop on hackertray, or to test out experimental versions, do the following:
+
+- Clone the project
+- Run `(sudo) python setup.py develop` in the hackertray root directory
+- Run `hackertray` with the required command line options from anywhere.
+
 
 ##Author Information
 - Abhay Rana (<me@captnemo.in>)
