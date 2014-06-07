@@ -3,7 +3,7 @@ HackerTray
 
 [![HackerTray on PyPi](https://pypip.in/v/hackertray/badge.png)](https://pypi.python.org/pypi/hackertray/)
 [![HackerTray on PyPi](https://pypip.in/d/hackertray/badge.png)](https://pypi.python.org/pypi/hackertray/)
-[![Build Status](https://travis-ci.org/captn3m0/hackertray.png?branch=master)](https://travis-ci.org/captn3m0/hackertray)
+[![Build Status for Chrom Branch](https://travis-ci.org/captn3m0/hackertray.png?branch=feature-chrome-history)](https://travis-ci.org/captn3m0/hackertray)
 
 HackerTray is a simple [Hacker News](https://news.ycombinator.com/) Linux application
 that lets you view top HN stories in your System Tray. It relies on appindicator, so
@@ -51,11 +51,18 @@ need to clear the pip cache before upgrading:
 
 `sudo rm -rf /tmp/pip-build-root/hackertray`
 
+##Options
+HackerTray accepts its various options via the command line. Run `hackertray -h` to see all options. Currently the following switches are supported:
+
+1. `-c`: Enables comments support. Clicking on links will also open the comments page on HN. Can be switched off via the UI, but the setting is not remembered.
+2. `--chrome PROFILE_PATH`: Specifying a profile path to a chrome directory will make HackerTray read the Chrome History file to mark links as read. Links are checked once every 5 minutes, which is when the History file is copied (to override the lock in case Chrome is open), searched using sqlite and deleted. This feature is still experimental.
+
 ##Features
 1. Minimalist Approach to HN
 2. Opens links in your default browser
 3. Remembers which links you opened
 4. Shows Points/Comment count in a simple format
+5. Reads your Google Chrome History file to determine which links you've already read (even if you may not have opened them via HackerTray) (Experimental)
 
 ###Troubleshooting
 
