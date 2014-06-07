@@ -6,7 +6,6 @@ from hackertray import Chrome
 class ChromeTest(unittest.TestCase):
     def runTest(self):
     	config_folder_path = os.getcwd()+'/test/'
-    	print config_folder_path
         data = Chrome.search([
 			"https://github.com/",
 			"https://news.ycombinator.com/",

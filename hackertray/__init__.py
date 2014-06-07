@@ -9,17 +9,18 @@ if(os.environ.get('TRAVIS')!='true'):
     import gtk
 
     import webbrowser
+
+    try:
+        import appindicator
+    except ImportError:
+        import appindicator_replacement as appindicator
+
+    from appindicator_replacement import get_icon_filename
+    
 import json
 import argparse
 from os.path import expanduser
 import signal
-
-try:
-    import appindicator
-except ImportError:
-    import appindicator_replacement as appindicator
-
-from appindicator_replacement import get_icon_filename
 
 ##This is to get --version to work
 try:
