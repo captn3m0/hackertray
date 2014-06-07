@@ -89,6 +89,10 @@ To develop on hackertray, or to test out experimental versions, do the following
 - Run `(sudo) python setup.py develop` in the hackertray root directory
 - Run `hackertray` with the required command line options from anywhere.
 
+##Credits
+
+- Mark Rickert for [Hacker Bar](http://hackerbarapp.com/).
+- [Giridaran Manivannan](https://github.com/ace03uec) for troubleshooting instructions.
 
 ##Author Information
 - Abhay Rana (<me@captnemo.in>)
