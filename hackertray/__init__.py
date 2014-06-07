@@ -172,7 +172,7 @@ class HackerNewsApp:
 
         #Call every 5 minutes
         if not no_timer:
-            gtk.timeout_add(10 * 60 * 1000, self.refresh, chrome_data_directory)
+            gtk.timeout_add(10 * 60 * 1000, self.refresh, widget, no_timer, chrome_data_directory)
 
 
 def main():
