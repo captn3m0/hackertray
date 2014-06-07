@@ -77,7 +77,7 @@ class HackerNewsApp:
         btnRefresh = gtk.MenuItem("Refresh")
         btnRefresh.show()
         #the last parameter is for not running the timer
-        btnRefresh.connect("activate", self.refresh, True)
+        btnRefresh.connect("activate", self.refresh, True, args.chrome)
         self.menu.append(btnRefresh)
 
         btnQuit = gtk.MenuItem("Quit")
