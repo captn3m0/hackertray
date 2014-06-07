@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 
-try:
+import os
+
+if(os.environ.get('TRAVIS')!='true'):
     import pygtk
 
     pygtk.require('2.0')
     import gtk
 
     import webbrowser
-except ImportError:
-    pass
 import json
 import argparse
 from os.path import expanduser
