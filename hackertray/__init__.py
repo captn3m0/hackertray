@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import requests
 
 if(os.environ.get('TRAVIS')!='true'):
     import pygtk
@@ -150,30 +151,35 @@ class HackerNewsApp:
         i.show()
 
     def refresh(self, widget=None, no_timer=False, chrome_data_directory=None):
+
         """Refreshes the menu """
-        data = list(reversed(HackerNews.getHomePage()[0:20]))
-
-        if(chrome_data_directory):
-            urls = [item['url'] for item in data]
-            searchResults = Chrome.search(urls, chrome_data_directory)
-
-        #Remove all the current stories
-        for i in self.menu.get_children():
-            if hasattr(i, 'url'):
-                self.menu.remove(i)
-
-        #Add back all the refreshed news
-        for index, item in enumerate(data):
+        try:
+            data = list(reversed(HackerNews.getHomePage()[0:20]))
             if(chrome_data_directory):
-                item['history'] = searchResults[index]
-            else:
-                item['history'] = False
-            self.addItem(item)
+                urls = [item['url'] for item in data]
+                searchResults = Chrome.search(urls, chrome_data_directory)
 
-        #Call every 5 minutes
-        if not no_timer:
-            gtk.timeout_add(10 * 60 * 1000, self.refresh, widget, no_timer, chrome_data_directory)
+            #Remove all the current stories
+            for i in self.menu.get_children():
+                if hasattr(i, 'url'):
+                    self.menu.remove(i)
 
+            #Add back all the refreshed news
+            for index, item in enumerate(data):
+                if(chrome_data_directory):
+                    item['history'] = searchResults[index]
+                else:
+                    item['history'] = False
+                self.addItem(item)
+        # Catch network errors
+        except requests.exceptions.RequestException as e:
+            print "There was an error in fetching news items"
+        finally:
+            # Call every 10 minutes
+            if not no_timer:
+                gtk.timeout_add(10 * 30 * 1000, self.refresh, widget, no_timer, chrome_data_directory)
+
+        
 
 def main():
     parser = argparse.ArgumentParser(description='Hacker News in your System Tray')
