@@ -1,6 +1,8 @@
+from __future__ import print_function
 import sqlite3
 import shutil
 import os
+import sys
 
 class Chrome:
     @staticmethod
@@ -20,4 +22,7 @@ class Chrome:
     @staticmethod
     def setup(config_folder_path):
         file_name = os.path.abspath(config_folder_path+'/History')
+        if not os.path.isfile(file_name):
+            print("ERROR: ", "Could not find Chrome history file", file=sys.stderr)
+            sys.exit(1)
         shutil.copyfile(file_name, '/tmp/hackertray.chrome')
