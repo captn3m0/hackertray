@@ -3,16 +3,14 @@ HackerTray
 
 [![HackerTray on PyPi](https://pypip.in/v/hackertray/badge.png)](https://pypi.python.org/pypi/hackertray/)
 [![HackerTray on PyPi](https://pypip.in/d/hackertray/badge.png)](https://pypi.python.org/pypi/hackertray/)
-[![Build Status for Chrom Branch](https://travis-ci.org/captn3m0/hackertray.png?branch=feature-chrome-history)](https://travis-ci.org/captn3m0/hackertray)
+[![Build Status](https://travis-ci.org/captn3m0/hackertray.png)](https://travis-ci.org/captn3m0/hackertray)
 
 HackerTray is a simple [Hacker News](https://news.ycombinator.com/) Linux application
 that lets you view top HN stories in your System Tray. It relies on appindicator, so
 it is not guaranteed to work on all systems. It also provides a Gtk StatusIcon fallback
 in case AppIndicator is not available.
 
-The inspiration for this came from [Hacker Bar](http://hackerbarapp.com), which is 
-Mac-only. I tried to port it to `node-webkit`, but had to do it in Python instead
-because nw doesn't support AppIndicators yet.
+The inspiration for this came from [Hacker Bar](http://hackerbarapp.com), which is Mac-only.
 
 ##Screenshot
 
@@ -72,7 +70,7 @@ Replace `Default` with `Profile 1`, `Profile 2` or so on if you use multiple pro
 2. Opens links in your default browser
 3. Remembers which links you opened
 4. Shows Points/Comment count in a simple format
-5. Reads your Google Chrome History file to determine which links you've already read (even if you may not have opened them via HackerTray) (Experimental)
+5. Reads your Google Chrome History file to determine which links you've already read (even if you may not have opened them via HackerTray)
 
 ###Troubleshooting
 
