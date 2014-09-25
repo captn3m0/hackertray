@@ -41,13 +41,16 @@ if you are running OpenBox. [Here](http://imgur.com/mnhIzDK) is how the
 configuration should look like in Ubuntu and its derivatives. 
 
 ###Upgrade
-The latest stable version is always the one [available on pip](https://pypi.python.org/pypi/hackertray/).
-You can check which version you have installed with `pip freeze | grep hackertray`.
+The latest stable version is [![the one on PyPi](https://pypip.in/v/hackertray/badge.png)](https://pypi.python.org/pypi/hackertray/)
+
+You can check which version you have installed with `hackertray --version`.
 
 To upgrade, run `pip install -U hackertray`. In some cases (Ubuntu), you might
 need to clear the pip cache before upgrading:
 
 `sudo rm -rf /tmp/pip-build-root/hackertray`
+
+HackerTray will automatically check the latest version on startup, and inform you if there is an update available.
 
 ##Options
 HackerTray accepts its various options via the command line. Run `hackertray -h` to see all options. Currently the following switches are supported:
