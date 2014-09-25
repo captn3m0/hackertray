@@ -23,20 +23,14 @@ import argparse
 from os.path import expanduser
 import signal
 
-##This is to get --version to work
-try:
-    import pkg_resources
-
-    __version = pkg_resources.require("hackertray")[0].version
-except:
-    __version = "Can't read version number."
-
 from hackernews import HackerNews
 from chrome import Chrome
+from version import Version
 
 class HackerNewsApp:
     HN_URL_PREFIX = "https://news.ycombinator.com/item?id="
-
+    UPDATE_URL = "https://github.com/captn3m0/hackertray#upgrade"
+    ABOUT_URL = "https://github.com/captn3m0/hackertray"
     def __init__(self, args):
         #Load the database
         home = expanduser("~")
@@ -81,6 +75,12 @@ class HackerNewsApp:
         btnRefresh.connect("activate", self.refresh, True, args.chrome)
         self.menu.append(btnRefresh)
 
+        if Version.new_available():
+            btnUpdate = gtk.MenuItem("New Update Available")
+            btnUpdate.show()
+            btnUpdate.connect('activate',self.showUpdate)
+            self.menu.append(btnUpdate)
+
         btnQuit = gtk.MenuItem("Quit")
         btnQuit.show()
         btnQuit.connect("activate", self.quit)
@@ -95,9 +95,16 @@ class HackerNewsApp:
         """Whether comments page is opened or not"""
         self.commentState = not self.commentState
 
+    def showUpdate(self,widget):
+        """Handle the update button"""
+        webbrowser.open(HackerNewsApp.UPDATE_URL)
+        # Remove the update button once clicked
+        self.menu.remove(widget)
+
+
     def showAbout(self, widget):
         """Handle the about btn"""
-        webbrowser.open("https://github.com/captn3m0/hackertray/")
+        webbrowser.open(HackerNewsApp.ABOUT_URL)
 
     #ToDo: Handle keyboard interrupt properly
     def quit(self, widget, data=None):
@@ -173,7 +180,7 @@ class HackerNewsApp:
                 self.addItem(item)
         # Catch network errors
         except requests.exceptions.RequestException as e:
-            print "There was an error in fetching news items"
+            print "[+] There was an error in fetching news items"
         finally:
             # Call every 10 minutes
             if not no_timer:
@@ -183,7 +190,7 @@ class HackerNewsApp:
 
 def main():
     parser = argparse.ArgumentParser(description='Hacker News in your System Tray')
-    parser.add_argument('-v','--version', action='version', version=__version)
+    parser.add_argument('-v','--version', action='version', version=Version.current())
     parser.add_argument('-c','--comments', dest='comments',action='store_true', help="Load the HN comments link for the article as well")
     parser.add_argument('--chrome', dest='chrome', help="Specify a Google Chrome Profile directory to use for matching chrome history")
     parser.set_defaults(comments=False)
