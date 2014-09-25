@@ -16,7 +16,6 @@ class Version:
     def new_available():
         latest  = Version.latest()
         current = Version.current()
-        print [latest, current]
         try:
             if pkg_resources.parse_version(latest) > pkg_resources.parse_version(current):
                 print "[+] New version " + latest + " is available"
