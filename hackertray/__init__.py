@@ -151,6 +151,8 @@ class HackerNewsApp:
 
         i.set_active(visited)
         i.url = item['url']
+        tooltip = "{url}\nPosted by {user} {timeago}".format(url=item['url'], user=item['user'], timeago=item['time_ago'])
+        i.set_tooltip_text(tooltip)
         i.signal_id = i.connect('activate', self.open)
         i.hn_id = item['id']
         i.item_id = item['id']
