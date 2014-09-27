@@ -22,7 +22,7 @@ setup(name='hackertray',
           'hackertray.data': ['hacker-tray.png']
       },
       install_requires=[
-          'requests>=2.0',
+          'requests>=2.2.1',
       ],
       entry_points={
           'console_scripts': ['hackertray = hackertray:main'],
