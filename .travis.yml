@@ -5,6 +5,7 @@ python:
 install: 
  - pip install requests
  - pip install nose
+ - pip install mixpanel-py
 # command to run tests, e.g. python setup.py test
 script:  nosetests --nocapture
 notifications:

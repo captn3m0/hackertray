@@ -95,6 +95,7 @@ class HackerNewsApp:
 
         self.ind.set_menu(self.menu)
         self.refresh(chrome_data_directory=args.chrome)
+        self.launch_analytics(args)
 
         # Now that we're all done with the boot, send a beacone home
         launch_data = vars(args)
