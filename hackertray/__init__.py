@@ -2,6 +2,8 @@
 
 import os
 import requests
+import platform
+import subprocess
 
 if(os.environ.get('TRAVIS')!='true'):
     import pygtk
@@ -97,9 +99,15 @@ class HackerNewsApp:
         self.refresh(chrome_data_directory=args.chrome)
         self.launch_analytics(args)
 
+    def launch_analytics(self, args):
         # Now that we're all done with the boot, send a beacone home
         launch_data = vars(args)
         launch_data['version'] = Version.current()
+        launch_data['platform'] = platform.linux_distribution()
+        try:
+            launch_data['browser'] = subprocess.check_output(["xdg-settings","get","default-web-browser"]).strip()
+        except subprocess.CalledProcessError as e:
+            launch_data['browser'] = "unknown"
         Analytics.track('launch', launch_data)
 
     def toggleComments(self, widget):
