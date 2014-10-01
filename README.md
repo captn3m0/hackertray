@@ -90,6 +90,9 @@ To develop on hackertray, or to test out experimental versions, do the following
 - Run `(sudo) python setup.py develop` in the hackertray root directory
 - Run `hackertray` with the required command line options from anywhere.
 
+##Analytics
+TO help improve the project and learn how its being used, I've added Analytics in hackertray. The `--dnt` switch disables all analytics so that you can opt-out if desired. All data is collected anonymously, with no machine id or user-identifying information being sent back. To learn more, and see which events are being tracked, see the [Analytics](wiki/Analytics) wiki page.
+
 ##Credits
 
 - Mark Rickert for [Hacker Bar](http://hackerbarapp.com/).
