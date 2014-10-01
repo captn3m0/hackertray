@@ -119,11 +119,13 @@ class HackerNewsApp:
         webbrowser.open(HackerNewsApp.UPDATE_URL)
         # Remove the update button once clicked
         self.menu.remove(widget)
+        Analytics.visit(HackerNewsApp.UPDATE_URL)
 
 
     def showAbout(self, widget):
         """Handle the about btn"""
         webbrowser.open(HackerNewsApp.ABOUT_URL)
+        Analytics.visit(HackerNewsApp.ABOUT_URL)
 
     #ToDo: Handle keyboard interrupt properly
     def quit(self, widget, data=None):
@@ -136,6 +138,7 @@ class HackerNewsApp:
             file.write(json.dumps(l))
 
         gtk.main_quit()
+        Analytics.track('quit')
 
     def run(self):
         signal.signal(signal.SIGINT, self.quit)
@@ -156,6 +159,7 @@ class HackerNewsApp:
 
         if self.commentState:
             webbrowser.open(self.HN_URL_PREFIX + widget.hn_id)
+        Analytics.visit(widget.url)
 
     def addItem(self, item):
         """Adds an item to the menu"""

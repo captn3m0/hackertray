@@ -18,3 +18,9 @@ class Analytics:
         if(Analytics.dnt == False):
             # All events are tracked anonymously
             Analytics.tracker.track("anonymous", event, data)
+    # Track a visit to a URL
+    # The url maybe an HN submission or 
+    # some meta-url pertaining to hackertray
+    @staticmethod
+    def visit(url):
+        Analytics.track('visit', url)
