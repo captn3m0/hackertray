@@ -47,7 +47,7 @@ class HackerNewsApp:
                 self.db = set()
 
         # Setup analytics
-        Analytics.setup(args.dnt, HackerNewsApp.MIXPANEL_TOKEN)
+        self.tracker = Analytics(args.dnt, HackerNewsApp.MIXPANEL_TOKEN)
 
         # create an indicator applet
         self.ind = appindicator.Indicator("Hacker Tray", "hacker-tray", appindicator.CATEGORY_APPLICATION_STATUS)
@@ -108,7 +108,7 @@ class HackerNewsApp:
             launch_data['browser'] = subprocess.check_output(["xdg-settings","get","default-web-browser"]).strip()
         except subprocess.CalledProcessError as e:
             launch_data['browser'] = "unknown"
-        Analytics.track('launch', launch_data)
+        self.tracker.track('launch', launch_data)
 
     def toggleComments(self, widget):
         """Whether comments page is opened or not"""
@@ -119,13 +119,13 @@ class HackerNewsApp:
         webbrowser.open(HackerNewsApp.UPDATE_URL)
         # Remove the update button once clicked
         self.menu.remove(widget)
-        Analytics.visit(HackerNewsApp.UPDATE_URL)
+        self.tracker.visit(HackerNewsApp.UPDATE_URL)
 
 
     def showAbout(self, widget):
         """Handle the about btn"""
         webbrowser.open(HackerNewsApp.ABOUT_URL)
-        Analytics.visit(HackerNewsApp.ABOUT_URL)
+        self.tracker.visit(HackerNewsApp.ABOUT_URL)
 
     #ToDo: Handle keyboard interrupt properly
     def quit(self, widget, data=None):
@@ -138,7 +138,7 @@ class HackerNewsApp:
             file.write(json.dumps(l))
 
         gtk.main_quit()
-        Analytics.track('quit')
+        self.tracker.track('quit')
 
     def run(self):
         signal.signal(signal.SIGINT, self.quit)
@@ -159,7 +159,7 @@ class HackerNewsApp:
 
         if self.commentState:
             webbrowser.open(self.HN_URL_PREFIX + widget.hn_id)
-        Analytics.visit(widget.url)
+        self.tracker.visit(widget.url)
 
     def addItem(self, item):
         """Adds an item to the menu"""

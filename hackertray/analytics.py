@@ -4,23 +4,20 @@ class Analytics:
     # Setup analytics.
     # dnt - do not track. Disables tracking if True
     # token - The mixpanel token
-    @staticmethod
-    def setup(dnt, token):
-        Analytics.dnt = dnt
-        Analytics.tracker = Mixpanel(token)
-        if(dnt == True):
+    def __init__(self, dnt, token):
+        self.dnt = dnt
+        self.tracker = Mixpanel(token)
+        if(self.dnt == True):
             print "[+] Analytics disabled"
     # Track an event
     # event - string containing the event name
     # data  - data related to the event, defaults to {}
-    @staticmethod
-    def track(event, data = {}):
-        if(Analytics.dnt == False):
+    def track(self, event, data = {}):
+        if(self.dnt == False):
             # All events are tracked anonymously
-            Analytics.tracker.track("anonymous", event, data)
+            self.tracker.track("anonymous", event, data)
     # Track a visit to a URL
     # The url maybe an HN submission or 
     # some meta-url pertaining to hackertray
-    @staticmethod
-    def visit(url):
-        Analytics.track('visit', url)
+    def visit(self, url):
+        self.track('visit', {"link":url})
