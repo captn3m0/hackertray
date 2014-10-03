@@ -90,7 +90,7 @@ class HackerNewsApp:
         self.menu.show()
 
         self.ind.set_menu(self.menu)
-        self.refresh(chrome_data_directory=args.chrome)
+        self.refresh(chrome_data_directory=args.chrome, firefox_data_directory=args.firefox)
 
     def toggleComments(self, widget):
         """Whether comments page is opened or not"""
@@ -160,14 +160,19 @@ class HackerNewsApp:
         self.menu.prepend(i)
         i.show()
 
-    def refresh(self, widget=None, no_timer=False, chrome_data_directory=None):
+    def refresh(self, widget=None, no_timer=False, chrome_data_directory=None, firefox_data_directory=None):
 
         """Refreshes the menu """
         try:
+            # Create an array of 20 false to denote matches in History
+            searchResults = [False]*20
             data = list(reversed(HackerNews.getHomePage()[0:20]))
+            urls = [item['url'] for item in data]
             if(chrome_data_directory):
-                urls = [item['url'] for item in data]
-                searchResults = Chrome.search(urls, chrome_data_directory)
+                searchResults = self.mergeBoolArray(searchResults, Chrome.search(urls, chrome_data_directory))
+
+            if(firefox_data_directory):
+                searchResults = self.mergeBoolArray(searchResults, Firefox.search(urls, firefox_data_directory))
 
             #Remove all the current stories
             for i in self.menu.get_children():
@@ -176,10 +181,7 @@ class HackerNewsApp:
 
             #Add back all the refreshed news
             for index, item in enumerate(data):
-                if(chrome_data_directory):
-                    item['history'] = searchResults[index]
-                else:
-                    item['history'] = False
+                item['history'] = searchResults[index]
                 self.addItem(item)
         # Catch network errors
         except requests.exceptions.RequestException as e:
@@ -189,13 +191,18 @@ class HackerNewsApp:
             if not no_timer:
                 gtk.timeout_add(10 * 30 * 1000, self.refresh, widget, no_timer, chrome_data_directory)
 
-        
+    # Merges two boolean arrays, using OR operation against each pair
+    def mergeBoolArray(self, original, patch):
+        for index, var in enumerate(original):
+            original[index] = original[index] or patch[index]
+        return original
 
 def main():
     parser = argparse.ArgumentParser(description='Hacker News in your System Tray')
     parser.add_argument('-v','--version', action='version', version=Version.current())
     parser.add_argument('-c','--comments', dest='comments',action='store_true', help="Load the HN comments link for the article as well")
     parser.add_argument('--chrome', dest='chrome', help="Specify a Google Chrome Profile directory to use for matching chrome history")
+    parser.add_argument('--firefox', dest='firefox', help="Specify a Firefox Profile directory to use for matching firefox history")
     parser.set_defaults(comments=False)
     args = parser.parse_args()
     indicator = HackerNewsApp(args)
