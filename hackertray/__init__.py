@@ -25,6 +25,7 @@ import signal
 
 from hackernews import HackerNews
 from chrome import Chrome
+from firefox import Firefox
 from version import Version
 
 class HackerNewsApp:
