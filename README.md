@@ -57,6 +57,9 @@ HackerTray accepts its various options via the command line. Run `hackertray -h`
 
 1. `-c`: Enables comments support. Clicking on links will also open the comments page on HN. Can be switched off via the UI, but the setting is not remembered.
 2. `--chrome PROFILE_PATH`: Specifying a profile path to a chrome directory will make HackerTray read the Chrome History file to mark links as read. Links are checked once every 5 minutes, which is when the History file is copied (to override the lock in case Chrome is open), searched using sqlite and deleted. This feature is still experimental.
+3. `--firefox PROFILE_PATH`: Specify path to a firefox profile directory. HackerTray will read your firefox history from this profile, and use it to mark links as read.
+
+Note that the `--chrome` and `--firefox` options are independent, and can be used together. However, they cannot be specified multiple times (so reading from 2 chrome profiles is not possible).
 
 ###Google Chrome Profile Path
 
@@ -67,6 +70,9 @@ Where your Profile is stored depends on which version of chrome you are using:
 - `chromium`: `~/.config/chromium/Default/`
 
 Replace `Default` with `Profile 1`, `Profile 2` or so on if you use multiple profiles on Chrome. Note that the `--chrome` option accepts a `PROFILE_PATH`, not the History file itself. Also note that sometimes `~` might not be set, so you might need to use the complete path (such as `/home/nemo/.config/google-chrome/Default/`).
+
+###Firefox Profile Path
+The default firefox profile path is `~/.mozilla/firefox/*.default`, where `*` denotes a random 8 digit string. You can also read `~/.mozilla/firefox/profiles.ini` to get a list of profiles.
 
 ##Features
 1. Minimalist Approach to HN
