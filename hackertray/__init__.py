@@ -2,6 +2,8 @@
 
 import os
 import requests
+import platform
+import subprocess
 
 if(os.environ.get('TRAVIS')!='true'):
     import pygtk
@@ -27,11 +29,13 @@ from hackernews import HackerNews
 from chrome import Chrome
 from firefox import Firefox
 from version import Version
+from analytics import Analytics
 
 class HackerNewsApp:
     HN_URL_PREFIX = "https://news.ycombinator.com/item?id="
     UPDATE_URL = "https://github.com/captn3m0/hackertray#upgrade"
     ABOUT_URL = "https://github.com/captn3m0/hackertray"
+    MIXPANEL_TOKEN = "51a04e37dad59393c7371407e84a8050"
     def __init__(self, args):
         #Load the database
         home = expanduser("~")
@@ -42,6 +46,9 @@ class HackerNewsApp:
                 self.db = set(json.loads(content))
             except ValueError:
                 self.db = set()
+
+        # Setup analytics
+        self.tracker = Analytics(args.dnt, HackerNewsApp.MIXPANEL_TOKEN)
 
         # create an indicator applet
         self.ind = appindicator.Indicator("Hacker Tray", "hacker-tray", appindicator.CATEGORY_APPLICATION_STATUS)
@@ -91,6 +98,18 @@ class HackerNewsApp:
 
         self.ind.set_menu(self.menu)
         self.refresh(chrome_data_directory=args.chrome, firefox_data_directory=args.firefox)
+        self.launch_analytics(args)
+
+    def launch_analytics(self, args):
+        # Now that we're all done with the boot, send a beacone home
+        launch_data = vars(args)
+        launch_data['version'] = Version.current()
+        launch_data['platform'] = platform.linux_distribution()
+        try:
+            launch_data['browser'] = subprocess.check_output(["xdg-settings","get","default-web-browser"]).strip()
+        except subprocess.CalledProcessError as e:
+            launch_data['browser'] = "unknown"
+        self.tracker.track('launch', launch_data)
 
     def toggleComments(self, widget):
         """Whether comments page is opened or not"""
@@ -101,11 +120,13 @@ class HackerNewsApp:
         webbrowser.open(HackerNewsApp.UPDATE_URL)
         # Remove the update button once clicked
         self.menu.remove(widget)
+        self.tracker.visit(HackerNewsApp.UPDATE_URL)
 
 
     def showAbout(self, widget):
         """Handle the about btn"""
         webbrowser.open(HackerNewsApp.ABOUT_URL)
+        self.tracker.visit(HackerNewsApp.ABOUT_URL)
 
     #ToDo: Handle keyboard interrupt properly
     def quit(self, widget, data=None):
@@ -118,6 +139,7 @@ class HackerNewsApp:
             file.write(json.dumps(l))
 
         gtk.main_quit()
+        self.tracker.track('quit')
 
     def run(self):
         signal.signal(signal.SIGINT, self.quit)
@@ -138,6 +160,7 @@ class HackerNewsApp:
 
         if self.commentState:
             webbrowser.open(self.HN_URL_PREFIX + widget.hn_id)
+        self.tracker.visit(widget.url)
 
     def addItem(self, item):
         """Adds an item to the menu"""
@@ -203,7 +226,9 @@ def main():
     parser.add_argument('-c','--comments', dest='comments',action='store_true', help="Load the HN comments link for the article as well")
     parser.add_argument('--chrome', dest='chrome', help="Specify a Google Chrome Profile directory to use for matching chrome history")
     parser.add_argument('--firefox', dest='firefox', help="Specify a Firefox Profile directory to use for matching firefox history")
+    parser.add_argument('--dnt', dest='dnt',action='store_true', help="Disable all analytics (Do Not Track)")
     parser.set_defaults(comments=False)
+    parser.set_defaults(dnt=False)
     args = parser.parse_args()
     indicator = HackerNewsApp(args)
     indicator.run()
