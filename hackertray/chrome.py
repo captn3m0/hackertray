@@ -9,7 +9,7 @@ class Chrome:
     def search(urls, config_folder_path):
         Chrome.setup(config_folder_path)
         conn = sqlite3.connect('/tmp/hackertray.chrome')
-        db = conn.cursor() 
+        db = conn.cursor()
         result = []
         for url in urls:
             db_result = db.execute('SELECT url from urls WHERE url=:url',{"url":url})
