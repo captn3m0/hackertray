@@ -56,8 +56,8 @@ HackerTray will automatically check the latest version on startup, and inform yo
 HackerTray accepts its various options via the command line. Run `hackertray -h` to see all options. Currently the following switches are supported:
 
 1. `-c`: Enables comments support. Clicking on links will also open the comments page on HN. Can be switched off via the UI, but the setting is not remembered.
-2. `--chrome PROFILE_PATH`: Specifying a profile path to a chrome directory will make HackerTray read the Chrome History file to mark links as read. Links are checked once every 5 minutes, which is when the History file is copied (to override the lock in case Chrome is open), searched using sqlite and deleted. This feature is still experimental.
-3. `--firefox PROFILE_PATH`: Specify path to a firefox profile directory. HackerTray will read your firefox history from this profile, and use it to mark links as read.
+2. `--chrome PROFILE-PATH`: Specifying a profile path to a chrome directory will make HackerTray read the Chrome History file to mark links as read. Links are checked once every 5 minutes, which is when the History file is copied (to override the lock in case Chrome is open), searched using sqlite and deleted. This feature is still experimental.
+3. `--firefox PROFILE-PATH`: Specify path to a firefox profile directory. HackerTray will read your firefox history from this profile, and use it to mark links as read.
 4. `--dnt`: Disable analytics. Hackertray will no longer collect any sort of analytics. I'd prefer it if you left out this switch, as it helps me improve hackertray by understanding how its being used.
 
 Note that the `--chrome` and `--firefox` options are independent, and can be used together. However, they cannot be specified multiple times (so reading from 2 chrome profiles is not possible).
@@ -71,7 +71,7 @@ Where your Profile is stored depends on which version of chrome you are using:
 - `google-chrome-unstable`: `~/.config/google-chrome-unstable/Default/`
 - `chromium`: `~/.config/chromium/Default/`
 
-Replace `Default` with `Profile 1`, `Profile 2` or so on if you use multiple profiles on Chrome. Note that the `--chrome` option accepts a `PROFILE_PATH`, not the History file itself. Also note that sometimes `~` might not be set, so you might need to use the complete path (such as `/home/nemo/.config/google-chrome/Default/`).
+Replace `Default` with `Profile 1`, `Profile 2` or so on if you use multiple profiles on Chrome. Note that the `--chrome` option accepts a `PROFILE-PATH`, not the History file itself. Also note that sometimes `~` might not be set, so you might need to use the complete path (such as `/home/nemo/.config/google-chrome/Default/`).
 
 ###Firefox Profile Path
 The default firefox profile path is `~/.mozilla/firefox/*.default`, where `*` denotes a random 8 digit string. You can also read `~/.mozilla/firefox/profiles.ini` to get a list of profiles.
@@ -110,12 +110,14 @@ To help improve the project and learn how its being used, I've added Analytics i
 - Abhay Rana (<me@captnemo.in>)
 
 ## Donating
-Support this project and [others by captn3m0][gittip] via [gittip][].
+Support this project and [others by captn3m0][gratipay] via [gratipay][].
 
-[![Support via Gittip][gittip-badge]][gittip]
+[![Support via Gratipay][gratipay-badge]][gratipay]
 
-[gittip-badge]: https://rawgithub.com/twolfson/gittip-badge/master/dist/gittip.png
-[gittip]: https://www.gittip.com/captn3m0/
+[gratipay-badge]: https://cdn.rawgit.com/gratipay/gratipay-badge/2.0.1/dist/gratipay.png
+
+[gratipay]: https://gratipay.com/captn3m0
 
 ##Licence
 Licenced under the [MIT Licence](http://nemo.mit-license.org/).
+
