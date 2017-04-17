@@ -12,11 +12,11 @@ in case AppIndicator is not available.
 
 The inspiration for this came from [Hacker Bar](http://hackerbarapp.com), which is Mac-only.
 
-##Screenshot
+## Screenshot
 
 ![HackerTray Screenshot in elementaryOS](http://i.imgur.com/63l3qXV.png)
 
-##Installation
+## Installation
 HackerTray is distributed as a python package. Do the following to install:
 
 ``` sh
@@ -40,7 +40,7 @@ depending on your Ubuntu Version. Or put it in `~/.config/openbox/autostart`
 if you are running OpenBox. [Here](http://imgur.com/mnhIzDK) is how the 
 configuration should look like in Ubuntu and its derivatives. 
 
-###Upgrade
+### Upgrade
 The latest stable version is [![the one on PyPi](https://pypip.in/v/hackertray/badge.png)](https://pypi.python.org/pypi/hackertray/)
 
 You can check which version you have installed with `hackertray --version`.
@@ -52,7 +52,7 @@ need to clear the pip cache before upgrading:
 
 HackerTray will automatically check the latest version on startup, and inform you if there is an update available.
 
-##Options
+## Options
 HackerTray accepts its various options via the command line. Run `hackertray -h` to see all options. Currently the following switches are supported:
 
 1. `-c`: Enables comments support. Clicking on links will also open the comments page on HN. Can be switched off via the UI, but the setting is not remembered.
@@ -63,7 +63,7 @@ HackerTray accepts its various options via the command line. Run `hackertray -h`
 Note that the `--chrome` and `--firefox` options are independent, and can be used together. However, they cannot be specified multiple times (so reading from 2 chrome profiles is not possible).
 
 
-###Google Chrome Profile Path
+### Google Chrome Profile Path
 
 Where your Profile is stored depends on which version of chrome you are using:
 
@@ -73,24 +73,24 @@ Where your Profile is stored depends on which version of chrome you are using:
 
 Replace `Default` with `Profile 1`, `Profile 2` or so on if you use multiple profiles on Chrome. Note that the `--chrome` option accepts a `PROFILE-PATH`, not the History file itself. Also note that sometimes `~` might not be set, so you might need to use the complete path (such as `/home/nemo/.config/google-chrome/Default/`).
 
-###Firefox Profile Path
+### Firefox Profile Path
 The default firefox profile path is `~/.mozilla/firefox/*.default`, where `*` denotes a random 8 digit string. You can also read `~/.mozilla/firefox/profiles.ini` to get a list of profiles.
 
-##Features
+## Features
 1. Minimalist Approach to HN
 2. Opens links in your default browser
 3. Remembers which links you opened
 4. Shows Points/Comment count in a simple format
 5. Reads your Google Chrome History file to determine which links you've already read (even if you may not have opened them via HackerTray)
 
-###Troubleshooting
+### Troubleshooting
 
 If the app indicator fails to show in Ubuntu versions, consider installing 
 python-appindicator with
 
 `sudo apt-get install python-appindicator`
 
-###Development
+### Development
 
 To develop on hackertray, or to test out experimental versions, do the following:
 
@@ -98,15 +98,15 @@ To develop on hackertray, or to test out experimental versions, do the following
 - Run `(sudo) python setup.py develop` in the hackertray root directory
 - Run `hackertray` with the required command line options from anywhere.
 
-##Analytics
+## Analytics
 To help improve the project and learn how its being used, I've added Analytics in hackertray. The `--dnt` switch disables all analytics so that you can opt-out if desired. All data is collected anonymously, with no machine id or user-identifying information being sent back. To learn more, and see which events are being tracked, see the [Analytics](https://github.com/captn3m0/hackertray/wiki/Analytics) wiki page.
 
-##Credits
+## Credits
 
 - Mark Rickert for [Hacker Bar](http://hackerbarapp.com/).
 - [Giridaran Manivannan](https://github.com/ace03uec) for troubleshooting instructions.
 
-##Author Information
+## Author Information
 - Abhay Rana (<me@captnemo.in>)
 
 ## Donating
@@ -118,6 +118,6 @@ Support this project and [others by captn3m0][gratipay] via [gratipay][].
 
 [gratipay]: https://gratipay.com/captn3m0
 
-##Licence
+## Licence
 Licenced under the [MIT Licence](http://nemo.mit-license.org/).
 
