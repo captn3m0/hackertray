@@ -19,7 +19,7 @@ if(os.environ.get('TRAVIS')!='true'):
         import appindicator_replacement as appindicator
 
     from appindicator_replacement import get_icon_filename
-    
+
 import json
 import argparse
 from os.path import expanduser
@@ -159,7 +159,7 @@ class HackerNewsApp:
         webbrowser.open(widget.url)
 
         if self.commentState:
-            webbrowser.open(self.HN_URL_PREFIX + widget.hn_id)
+            webbrowser.open(self.HN_URL_PREFIX + str(widget.hn_id))
         self.tracker.visit(widget.url)
 
     def addItem(self, item):
@@ -205,6 +205,9 @@ class HackerNewsApp:
             #Add back all the refreshed news
             for index, item in enumerate(data):
                 item['history'] = searchResults[index]
+                if item['url'].startswith('item?id='):
+                    item['url'] = "https://news.ycombinator.com/" + item['url']
+
                 self.addItem(item)
         # Catch network errors
         except requests.exceptions.RequestException as e:
