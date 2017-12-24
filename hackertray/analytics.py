@@ -8,7 +8,7 @@ class Analytics:
         self.dnt = dnt
         self.tracker = Mixpanel(token)
         if(self.dnt == True):
-            print "[+] Analytics disabled"
+            print("[+] Analytics disabled")
     # Track an event
     # event - string containing the event name
     # data  - data related to the event, defaults to {}

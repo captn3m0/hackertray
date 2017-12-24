@@ -18,10 +18,10 @@ class Version:
         current = Version.current()
         try:
             if pkg_resources.parse_version(latest) > pkg_resources.parse_version(current):
-                print "[+] New version " + latest + " is available"
+                print("[+] New version " + latest + " is available")
                 return True
             else:
                 return False
         except requests.exceptions.RequestException as e:
-            print "[+] There was an error in trying to fetch updates"
+            print("[+] There was an error in trying to fetch updates")
             return False

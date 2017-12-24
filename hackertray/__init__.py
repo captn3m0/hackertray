@@ -16,20 +16,20 @@ if(os.environ.get('TRAVIS')!='true'):
     try:
         import appindicator
     except ImportError:
-        import appindicator_replacement as appindicator
+        from . import appindicator_replacement as appindicator
 
-    from appindicator_replacement import get_icon_filename
+    from .appindicator_replacement import get_icon_filename
 
 import json
 import argparse
 from os.path import expanduser
 import signal
 
-from hackernews import HackerNews
-from chrome import Chrome
-from firefox import Firefox
-from version import Version
-from analytics import Analytics
+from .hackernews import HackerNews
+from .chrome import Chrome
+from .firefox import Firefox
+from .version import Version
+from .analytics import Analytics
 
 class HackerNewsApp:
     HN_URL_PREFIX = "https://news.ycombinator.com/item?id="
@@ -211,7 +211,7 @@ class HackerNewsApp:
                 self.addItem(item)
         # Catch network errors
         except requests.exceptions.RequestException as e:
-            print "[+] There was an error in fetching news items"
+            print("[+] There was an error in fetching news items")
         finally:
             # Call every 10 minutes
             if not no_timer:
