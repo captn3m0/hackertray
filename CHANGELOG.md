@@ -1,5 +1,10 @@
 This file will only list released and supported versions, usually skipping over very minor updates.
 
+Unreleased
+==========
+
+* Python 3 upgrade
+
 3.0.0
 =====
 
