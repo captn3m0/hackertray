@@ -4,8 +4,10 @@ import shutil
 import os
 import sys
 
+
 class Chrome:
     HISTORY_TMP_LOCATION = '/tmp/hackertray.chrome'
+
     @staticmethod
     def search(urls, config_folder_path):
         Chrome.setup(config_folder_path)
@@ -13,13 +15,14 @@ class Chrome:
         db = conn.cursor()
         result = []
         for url in urls:
-            db_result = db.execute('SELECT url from urls WHERE url=:url',{"url":url})
+            db_result = db.execute('SELECT url from urls WHERE url=:url', {"url": url})
             if(db.fetchone() == None):
                 result.append(False)
             else:
                 result.append(True)
         os.remove(Chrome.HISTORY_TMP_LOCATION)
         return result
+
     @staticmethod
     def setup(config_folder_path):
         file_name = os.path.abspath(config_folder_path+'/History')

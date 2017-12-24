@@ -35,6 +35,7 @@ def get_icon_filename(icon_name):
 # The main class
 class Indicator:
     # Constructor
+
     def __init__(self, unknown, icon, category):
         # Store the settings
         self.inactive_icon = get_icon_filename(icon)
