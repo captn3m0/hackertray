@@ -1,4 +1,4 @@
-#=========================
+# =========================
 #
 # AppIndicator for GTK
 #  drop-in replacement
@@ -6,7 +6,7 @@
 #    Copyright 2010
 #     Nathan Osman
 #
-#=========================
+# =========================
 
 # We require PyGTK
 import gtk
@@ -29,7 +29,9 @@ STATUS_ATTENTION = 1
 
 def get_icon_filename(icon_name):
     # Determine where the icon is
-    return os.path.abspath(resource_filename('hackertray.data', 'hacker-tray.png'))
+    return os.path.abspath(
+        resource_filename('hackertray.data', 'hacker-tray.png')
+    )
 
 
 # The main class
