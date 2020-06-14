@@ -2,15 +2,12 @@
 
 import os
 import requests
-import platform
 import subprocess
 
 if(os.environ.get('TRAVIS') != 'true'):
-    import pygtk
-
-    pygtk.require('2.0')
-    import gtk
-
+    import gi
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk,GLib
     import webbrowser
 
     try:
@@ -53,40 +50,40 @@ class HackerNewsApp:
         self.ind.set_icon(get_icon_filename("hacker-tray.png"))
 
         # create a menu
-        self.menu = gtk.Menu()
+        self.menu = Gtk.Menu()
 
         # The default state is false, and it toggles when you click on it
         self.commentState = args.comments
 
         # create items for the menu - refresh, quit and a separator
-        menuSeparator = gtk.SeparatorMenuItem()
+        menuSeparator = Gtk.SeparatorMenuItem()
         menuSeparator.show()
         self.menu.append(menuSeparator)
 
-        btnComments = gtk.CheckMenuItem("Show Comments")
+        btnComments = Gtk.CheckMenuItem("Show Comments")
         btnComments.show()
         btnComments.set_active(args.comments)
         btnComments.connect("activate", self.toggleComments)
         self.menu.append(btnComments)
 
-        btnAbout = gtk.MenuItem("About")
+        btnAbout = Gtk.MenuItem("About")
         btnAbout.show()
         btnAbout.connect("activate", self.showAbout)
         self.menu.append(btnAbout)
 
-        btnRefresh = gtk.MenuItem("Refresh")
+        btnRefresh = Gtk.MenuItem("Refresh")
         btnRefresh.show()
         # the last parameter is for not running the timer
         btnRefresh.connect("activate", self.refresh, True, args.chrome)
         self.menu.append(btnRefresh)
 
         if Version.new_available():
-            btnUpdate = gtk.MenuItem("New Update Available")
+            btnUpdate = Gtk.MenuItem("New Update Available")
             btnUpdate.show()
             btnUpdate.connect('activate', self.showUpdate)
             self.menu.append(btnUpdate)
 
-        btnQuit = gtk.MenuItem("Quit")
+        btnQuit = Gtk.MenuItem("Quit")
         btnQuit.show()
         btnQuit.connect("activate", self.quit)
         self.menu.append(btnQuit)
@@ -95,18 +92,6 @@ class HackerNewsApp:
 
         self.ind.set_menu(self.menu)
         self.refresh(chrome_data_directory=args.chrome, firefox_data_directory=args.firefox)
-        self.launch_analytics(args)
-
-    def launch_analytics(self, args):
-        # Now that we're all done with the boot, send a beacone home
-        launch_data = vars(args)
-        launch_data['version'] = Version.current()
-        launch_data['platform'] = platform.linux_distribution()
-        try:
-            launch_data['browser'] = subprocess.check_output(["xdg-settings", "get", "default-web-browser"]).strip()
-        except subprocess.CalledProcessError as e:
-            launch_data['browser'] = "unknown"
-
 
     def toggleComments(self, widget):
         """Whether comments page is opened or not"""
@@ -132,11 +117,11 @@ class HackerNewsApp:
         with open(home + '/.hackertray.json', 'w+') as file:
             file.write(json.dumps(l))
 
-        gtk.main_quit()
+        Gtk.main_quit()
 
     def run(self):
         signal.signal(signal.SIGINT, self.quit)
-        gtk.main()
+        Gtk.main()
         return 0
 
     def open(self, widget, event=None, data=None):
@@ -160,7 +145,7 @@ class HackerNewsApp:
         if item['points'] == 0 or item['points'] is None:
             return
 
-        i = gtk.CheckMenuItem(
+        i = Gtk.CheckMenuItem(
             "(" + str(item['points']).zfill(3) + "/" + str(item['comments_count']).zfill(3) + ")    " + item['title'])
 
         visited = item['history'] or item['id'] in self.db
@@ -206,7 +191,7 @@ class HackerNewsApp:
         finally:
             # Call every 10 minutes
             if not no_timer:
-                gtk.timeout_add(10 * 30 * 1000, self.refresh, widget, no_timer, chrome_data_directory)
+                GLib.timeout_add(10 * 30 * 1000, self.refresh, widget, no_timer, chrome_data_directory)
 
     # Merges two boolean arrays, using OR operation against each pair
     def mergeBoolArray(self, original, patch):
@@ -220,7 +205,7 @@ def main():
     parser.add_argument('-v', '--version', action='version', version=Version.current())
     parser.add_argument('-c', '--comments', dest='comments', action='store_true', help="Load the HN comments link for the article as well")
     parser.add_argument('--chrome', dest='chrome', help="Specify a Google Chrome Profile directory to use for matching chrome history")
-    parser.add_argument('--firefox', dest='firefox', help="Specify a Firefox Profile directory to use for matching firefox history")
+    parser.add_argument('--firefox', default=self.default_firefox_profile(), dest='firefox', help="Specify a Firefox Profile directory to use for matching firefox history")
     parser.set_defaults(comments=False)
     parser.set_defaults(dnt=False)
     args = parser.parse_args()
