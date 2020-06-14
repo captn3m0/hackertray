@@ -3,11 +3,30 @@ import sqlite3
 import shutil
 import os
 import sys
-
+from pathlib import Path
+import configparser
 
 class Firefox:
     HISTORY_TMP_LOCATION = '/tmp/hackertray.firefox'
     HISTORY_FILE_NAME = '/places.sqlite'
+
+    @staticmethod
+    def default_firefox_profile_path():
+        profile_file_path = Path.home().joinpath(".mozilla/firefox/profiles.ini")
+        profile_path = None
+        if (os.path.exists(profile_file_path)):
+            parser = configparser.ConfigParser()
+            parser.read(profile_file_path)
+            for section in parser.sections():
+                if parser[section]["Default"] == "1":
+                    if parser[section]["IsRelative"] == "1":
+                        profile_path = str(Path.home().joinpath(".mozilla/firefox/").joinpath(parser[section]["Path"]))
+                    else:
+                        profile_path = parser[section]["Path"]
+        if profile_path and Path.is_dir(Path(profile_path)):
+            return profile_path
+        else:
+            raise RuntimeError("Couldn't find default Firefox profile")
 
     @staticmethod
     def search(urls, config_folder_path):
