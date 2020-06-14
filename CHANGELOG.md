@@ -3,6 +3,11 @@ This file will only list released and supported versions, usually skipping over 
 Unreleased
 ==========
 
+4.0.1
+=====
+
+* Changes "Show Comments" entry to a radio menu item
+
 4.0.0
 =====
 
