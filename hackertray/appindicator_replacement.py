@@ -9,8 +9,7 @@
 #=========================
 
 # We require PyGTK
-import gtk
-import gobject
+from gi.repository import Gtk,GLib
 
 # We also need os and sys
 import os
@@ -35,13 +34,14 @@ def get_icon_filename(icon_name):
 # The main class
 class Indicator:
     # Constructor
+
     def __init__(self, unknown, icon, category):
         # Store the settings
         self.inactive_icon = get_icon_filename(icon)
         self.active_icon = ""  # Blank until the user calls set_attention_icon
 
         # Create the status icon
-        self.icon = gtk.StatusIcon()
+        self.icon = Gtk.StatusIcon()
 
         # Initialize to the default icon
         self.icon.set_from_file(self.inactive_icon)
@@ -80,7 +80,7 @@ class Indicator:
 
     def show_menu(self, widget):
         # Show the menu
-        self.menu.popup(None, None, None, 0, 0)
+        self.menu.popup(None, None, None, 0, 0, Gtk.get_current_event_time())
 
         # Get the location and size of the window
         mouse_rect = self.menu.get_window().get_frame_extents()
@@ -91,7 +91,7 @@ class Indicator:
         self.bottom = self.y + mouse_rect.height
 
         # Set a timer to poll the menu
-        self.timer = gobject.timeout_add(100, self.check_mouse)
+        self.timer = GLib.timeout_add(100, self.check_mouse)
 
     def check_mouse(self):
         if not self.menu.get_window().is_visible():
@@ -100,9 +100,9 @@ class Indicator:
         # Now check the global mouse coords
         root = self.menu.get_screen().get_root_window()
 
-        x, y, z = root.get_pointer()
+        _,x,y,_ = root.get_pointer()
 
-        if x < self.x or x > self.right or y < self.y or y > self.bottom:
+        if (x < (self.x-10)) or (x > self.right) or (y < (self.y+10)) or (y > self.bottom):
             self.hide_menu()
         else:
             return True

@@ -7,6 +7,7 @@ urls = [
 
 
 class HackerNews:
+
     @staticmethod
     def getHomePage():
         random.shuffle(urls)
