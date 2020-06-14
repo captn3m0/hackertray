@@ -6,6 +6,7 @@ Unreleased
 4.0.0
 =====
 
+* Adds support for --firefox auto, picks the default firefox profile automatically
 * Upgrades to Python 3.0. Python 2 is no longer supported
 * Switches from PyGtk to PyGObject.
 * AppIndicator is no longer supported, because it is Python 2 only
