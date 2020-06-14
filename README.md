@@ -104,6 +104,8 @@ To develop on hackertray, or to test out experimental versions, do the following
 
 ## Analytics
 
+On every launch, a request is made to `https://pypi.python.org/pypi/hackertray/json` to check the latest version.
+
 **No more tracking**. All data every collected for this project has been deleted. You can see [the wiki](https://github.com/captn3m0/hackertray/wiki/Analytics) for what all was collected earlier.
 
 ## Credits
