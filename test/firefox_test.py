@@ -19,8 +19,8 @@ class FirefoxTest(unittest.TestCase):
     def test_default(self):
         test_default_path = Path.home().joinpath(".mozilla/firefox/x0ran0o9.default")
         if(os.environ.get('TRAVIS') == 'true'):
-            if not os.path.exists(test_default_path):
-                os.makedirs(test_default_path)
+            if not os.path.exists(str(test_default_path)):
+                os.makedirs(str(test_default_path))
             with open(str(Path.home().joinpath('.mozilla/firefox/profiles.ini')), 'w') as f:
                 f.write("""
 [Profile1]
@@ -29,4 +29,4 @@ IsRelative=1
 Path=x0ran0o9.default
 Default=1
                 """)
-        self.assertTrue(Firefox.default_firefox_profile_path()==Path.home().joinpath(".mozilla/firefox/x0ran0o9.default"))
+        self.assertTrue(Firefox.default_firefox_profile_path()==str(Path.home().joinpath(".mozilla/firefox/x0ran0o9.default")))

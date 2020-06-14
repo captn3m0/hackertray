@@ -12,7 +12,7 @@ class Firefox:
 
     @staticmethod
     def default_firefox_profile_path():
-        profile_file_path = Path.home().joinpath(".mozilla/firefox/profiles.ini")
+        profile_file_path = str(Path.home().joinpath(".mozilla/firefox/profiles.ini"))
         profile_path = None
         if (os.path.exists(profile_file_path)):
             parser = configparser.ConfigParser()

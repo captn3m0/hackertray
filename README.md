@@ -65,11 +65,12 @@ Note that the `--chrome` and `--firefox` options are independent, and can be use
 
 ### Google Chrome Profile Path
 
-Where your Profile is stored depends on which version of chrome you are using:
+Where your Profile is stored depends on [which version of chrome you are using](https://chromium.googlesource.com/chromium/src.git/+/62.0.3202.58/docs/user_data_dir.md#linux):
 
--   `google-chrome-stable`: `~/.config/google-chrome/Default/`
--   `google-chrome-unstable`: `~/.config/google-chrome-unstable/Default/`
--   `chromium`: `~/.config/chromium/Default/`
+- [Chrome Stable] `~/.config/google-chrome/Default`
+- [Chrome Beta] `~/.config/google-chrome-beta/Default`
+- [Chrome Dev] `~/.config/google-chrome-unstable/Default`
+- [Chromium] `~/.config/chromium/Default`
 
 Replace `Default` with `Profile 1`, `Profile 2` or so on if you use multiple profiles on Chrome. Note that the `--chrome` option accepts a `PROFILE-PATH`, not the History file itself. Also note that sometimes `~` might not be set, so you might need to use the complete path (such as `/home/nemo/.config/google-chrome/Default/`).
 
@@ -112,6 +113,7 @@ On every launch, a request is made to `https://pypi.python.org/pypi/hackertray/j
 
 -   Mark Rickert for [Hacker Bar](http://hackerbarapp.com/) (No longer active)
 -   [Giridaran Manivannan](https://github.com/ace03uec) for troubleshooting instructions.
+-   [@cheeaun](https://github.com/cheeaun) for the [Unofficial Hacker News API](https://github.com/cheeaun/node-hnapi/)
 
 ## Licence
 
