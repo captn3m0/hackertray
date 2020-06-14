@@ -3,7 +3,12 @@ This file will only list released and supported versions, usually skipping over 
 Unreleased
 ==========
 
-* Python 3 upgrade
+4.0.0
+=====
+
+* Upgrades to Python 3.0. Python 2 is no longer supported
+* Switches from PyGtk to PyGObject.
+* AppIndicator is no longer supported, because it is Python 2 only
 
 3.0.0
 =====

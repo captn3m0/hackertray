@@ -1,14 +1,20 @@
 language: python
 python:
-  - "2.7"
+  # https://endoflife.date/python
+  # goes away in sep 2020
+  - "3.5"
+  # goes away in dec 2021
   - "3.6"
+  # goes away in jun 2023
+  - "3.7"
+  # goes away in oct 2024
+  - "3.8"
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: 
+install:
  - pip install requests
  - pip install nose
- - pip install mixpanel-py
 # command to run tests, e.g. python setup.py test
-script:  nosetests --nocapture
+script: nosetests --nocapture
 notifications:
   email:
     on_success: never

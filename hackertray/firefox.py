@@ -18,8 +18,8 @@ class Firefox:
             parser = configparser.ConfigParser()
             parser.read(profile_file_path)
             for section in parser.sections():
-                if parser[section]["Default"] == "1":
-                    if parser[section]["IsRelative"] == "1":
+                if parser.has_option(section,"Default") and parser[section]["Default"] == "1":
+                    if parser.has_option(section,"IsRelative") and parser[section]["IsRelative"] == "1":
                         profile_path = str(Path.home().joinpath(".mozilla/firefox/").joinpath(parser[section]["Path"]))
                     else:
                         profile_path = parser[section]["Path"]
@@ -45,8 +45,8 @@ class Firefox:
 
     @staticmethod
     def setup(config_folder_path):
-        file_name = os.path.abspath(config_folder_path+Firefox.HISTORY_FILE_NAME)
+        file_name = os.path.abspath(config_folder_path + Firefox.HISTORY_FILE_NAME)
         if not os.path.isfile(file_name):
-            print("ERROR: ", "Could not find Firefox history file", file=sys.stderr)
+            print("ERROR: Could not find Firefox history file, using %s" % file_name)
             sys.exit(1)
         shutil.copyfile(file_name, Firefox.HISTORY_TMP_LOCATION)

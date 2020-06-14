@@ -87,10 +87,11 @@ class HackerNewsApp:
         btnQuit.show()
         btnQuit.connect("activate", self.quit)
         self.menu.append(btnQuit)
-
         self.menu.show()
-
         self.ind.set_menu(self.menu)
+
+        if args.firefox == "auto":
+            args.firefox = Firefox.default_firefox_profile_path()
         self.refresh(chrome_data_directory=args.chrome, firefox_data_directory=args.firefox)
 
     def toggleComments(self, widget):
@@ -205,7 +206,7 @@ def main():
     parser.add_argument('-v', '--version', action='version', version=Version.current())
     parser.add_argument('-c', '--comments', dest='comments', action='store_true', help="Load the HN comments link for the article as well")
     parser.add_argument('--chrome', dest='chrome', help="Specify a Google Chrome Profile directory to use for matching chrome history")
-    parser.add_argument('--firefox', default=self.default_firefox_profile(), dest='firefox', help="Specify a Firefox Profile directory to use for matching firefox history")
+    parser.add_argument('--firefox', dest='firefox', help="Specify a Firefox Profile directory to use for matching firefox history. Pass auto to automatically pick the default profile")
     parser.set_defaults(comments=False)
     parser.set_defaults(dnt=False)
     args = parser.parse_args()
