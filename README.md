@@ -2,7 +2,7 @@
 
 [![HackerTray on PyPi](https://pypip.in/v/hackertray/badge.png)](https://pypi.python.org/pypi/hackertray/)
 [![HackerTray on PyPi](https://pypip.in/d/hackertray/badge.png)](https://pypi.python.org/pypi/hackertray/)
-[![Build Status](https://travis-ci.org/captn3m0/hackertray.png)](https://travis-ci.org/captn3m0/hackertray)
+[![Build Status](https://travis-ci.org/captn3m0/hackertray.png)](https://travis-ci.org/captn3m0/hackertray) [![Coverage Status](https://coveralls.io/repos/github/captn3m0/hackertray/badge.svg?branch=master)](https://coveralls.io/github/captn3m0/hackertray?branch=master)
 
 HackerTray is a simple [Hacker News](https://news.ycombinator.com/) Linux application
 that lets you view top HN stories in your System Tray. It uses appindicator where available,

@@ -21,3 +21,4 @@ pip-delete-this-directory.txt
 
 pyvenv.cfg
 bin/
+.coverage

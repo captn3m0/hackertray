@@ -13,8 +13,11 @@ python:
 install:
  - pip install requests
  - pip install nose
+ - pip install coverage
+ - pip install coveralls
 # command to run tests, e.g. python setup.py test
-script: nosetests --nocapture
+script: coverage run --source=hackertray $(which nosetests)
+after_success: coveralls
 notifications:
   email:
     on_success: never
