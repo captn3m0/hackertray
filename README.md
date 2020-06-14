@@ -32,7 +32,7 @@ After that, you can run `hackertray` from anywhere and it will run. You can
 now add it to your OS dependent session autostart method. In Ubuntu, you can
 access it via:
 
-1.  System > Preferences > Sessions  
+1.  System > Preferences > Sessions
     (OR)
 2.  System > Preferences > Startup Applications
 
@@ -60,7 +60,6 @@ HackerTray accepts its various options via the command line. Run `hackertray -h`
 1.  `-c`: Enables comments support. Clicking on links will also open the comments page on HN. Can be switched off via the UI, but the setting is not remembered.
 2.  `--chrome PROFILE-PATH`: Specifying a profile path to a chrome directory will make HackerTray read the Chrome History file to mark links as read. Links are checked once every 5 minutes, which is when the History file is copied (to override the lock in case Chrome is open), searched using sqlite and deleted. This feature is still experimental.
 3.  `--firefox PROFILE-PATH`: Specify path to a firefox profile directory. HackerTray will read your firefox history from this profile, and use it to mark links as read.
-4.  `--dnt`: Disable analytics. Hackertray will no longer collect any sort of analytics. I'd prefer it if you left out this switch, as it helps me improve hackertray by understanding how its being used.
 
 Note that the `--chrome` and `--firefox` options are independent, and can be used together. However, they cannot be specified multiple times (so reading from 2 chrome profiles is not possible).
 
@@ -103,7 +102,7 @@ To develop on hackertray, or to test out experimental versions, do the following
 
 ## Analytics
 
-To help improve the project and learn how its being used, I've added Analytics in hackertray. The `--dnt` switch disables all analytics so that you can opt-out if desired. All data is collected anonymously, with no machine id or user-identifying information being sent back. To learn more, and see which events are being tracked, see the [Analytics](https://github.com/captn3m0/hackertray/wiki/Analytics) wiki page.
+**No more tracking**. All data every collected for this project has been deleted. You can see [the wiki](https://github.com/captn3m0/hackertray/wiki/Analytics) for what all was collected earlier.
 
 ## Credits
 

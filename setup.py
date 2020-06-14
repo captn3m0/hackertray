@@ -3,10 +3,7 @@ import sys
 from setuptools import setup
 from setuptools import find_packages
 
-
 requirements = ['requests']
-if sys.version_info < (2, 7):
-    requirements.append('argparse')
 
 setup(name='hackertray',
       version='3.0.0',
@@ -22,8 +19,7 @@ setup(name='hackertray',
           'hackertray.data': ['hacker-tray.png']
       },
       install_requires=[
-          'requests>=2.2.1',
-          'mixpanel-py>=3.0.0'
+          'requests>=2.23.0'
       ],
       entry_points={
           'console_scripts': ['hackertray = hackertray:main'],
