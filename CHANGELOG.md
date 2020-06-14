@@ -15,6 +15,7 @@ Unreleased
 * Upgrades to Python 3.0. Python 2 is no longer supported
 * Switches from PyGtk to PyGObject.
 * AppIndicator is no longer supported, because it is Python 2 only
+* Removed all MixPanel tracking.
 
 3.0.0
 =====

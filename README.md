@@ -5,9 +5,8 @@
 [![Build Status](https://travis-ci.org/captn3m0/hackertray.png)](https://travis-ci.org/captn3m0/hackertray)
 
 HackerTray is a simple [Hacker News](https://news.ycombinator.com/) Linux application
-that lets you view top HN stories in your System Tray. It relies on appindicator, so
-it is not guaranteed to work on all systems. It also provides a Gtk StatusIcon fallback
-in case AppIndicator is not available.
+that lets you view top HN stories in your System Tray. It uses appindicator where available,
+but provides a Gtk StatusIcon fallback in case AppIndicator is not available.
 
 The inspiration for this came from [Hacker Bar](http://hackerbarapp.com), which is Mac-only.
 
@@ -107,7 +106,7 @@ To develop on hackertray, or to test out experimental versions, do the following
 
 On every launch, a request is made to `https://pypi.python.org/pypi/hackertray/json` to check the latest version.
 
-**No more tracking**. All data every collected for this project has been deleted. You can see [the wiki](https://github.com/captn3m0/hackertray/wiki/Analytics) for what all was collected earlier.
+**No more tracking**. All data every collected for this project has been deleted. You can see [the wiki](https://github.com/captn3m0/hackertray/wiki/Analytics) for what all was collected earlier (Version `< 4.0.0`).
 
 ## Credits
 
