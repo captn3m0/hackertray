@@ -63,6 +63,7 @@ class HackerNewsApp:
         btnComments = Gtk.CheckMenuItem("Show Comments")
         btnComments.show()
         btnComments.set_active(args.comments)
+        btnComments.set_draw_as_radio(True)
         btnComments.connect("activate", self.toggleComments)
         self.menu.append(btnComments)
 
@@ -125,7 +126,7 @@ class HackerNewsApp:
         Gtk.main()
         return 0
 
-    def open(self, widget, event=None, data=None):
+    def open(self, widget, **args):
         """Opens the link in the web browser"""
         # We disconnect and reconnect the event in case we have
         # to set it to active and we don't want the signal to be processed
@@ -137,6 +138,8 @@ class HackerNewsApp:
         self.db.add(widget.item_id)
         webbrowser.open(widget.url)
 
+        # TODO: Add support for Shift+Click or Right Click
+        # to do the opposite of the current commentState setting
         if self.commentState:
             webbrowser.open(self.HN_URL_PREFIX + str(widget.hn_id))
 
