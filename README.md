@@ -59,6 +59,7 @@ HackerTray accepts its various options via the command line. Run `hackertray -h`
 1.  `-c`: Enables comments support. Clicking on links will also open the comments page on HN. Can be switched off via the UI, but the setting is not remembered.
 2.  `--chrome PROFILE-PATH`: Specifying a profile path to a chrome directory will make HackerTray read the Chrome History file to mark links as read. Links are checked once every 5 minutes, which is when the History file is copied (to override the lock in case Chrome is open), searched using sqlite and deleted. This feature is still experimental.
 3.  `--firefox PROFILE-PATH`: Specify path to a firefox profile directory. HackerTray will read your firefox history from this profile, and use it to mark links as read. Pass `auto` as PROFILE-PATH to automatically read the default profile and use that.
+4. `--reverse` (or `-r`). Switches the order for the elements in the menu, so Quit is at top. Use this if your system bar is at the bottom of the screen.
 
 Note that the `--chrome` and `--firefox` options are independent, and can be used together. However, they cannot be specified multiple times (so reading from 2 chrome profiles is not possible).
 
