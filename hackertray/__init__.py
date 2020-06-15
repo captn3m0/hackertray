@@ -156,8 +156,12 @@ class HackerNewsApp:
         if item['points'] == 0 or item['points'] is None:
             return
 
-        i = Gtk.CheckMenuItem(
-            "(" + str(item['points']).zfill(3) + "/" + str(item['comments_count']).zfill(3) + ")    " + item['title'])
+        points = str(item['points']).zfill(3) + "/" + str(item['comments_count']).zfill(3)
+
+        i = Gtk.CheckMenuItem.new_with_label(label="(" + points + ")"+item['title'])
+        label = i.get_child()
+        label.set_markup("<tt>" + points + "</tt> <span>"+item['title']+"</span>".format(points=points, title=item['title']))
+        label.set_selectable(False)
 
         visited = item['history'] or item['id'] in self.db
 
