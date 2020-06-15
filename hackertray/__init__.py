@@ -54,46 +54,53 @@ class HackerNewsApp:
 
         # The default state is false, and it toggles when you click on it
         self.commentState = args.comments
+        self.reverse = args.reverse
 
         # create items for the menu - refresh, quit and a separator
         menuSeparator = Gtk.SeparatorMenuItem()
         menuSeparator.show()
-        self.menu.append(menuSeparator)
+        self.add(menuSeparator)
 
         btnComments = Gtk.CheckMenuItem("Show Comments")
         btnComments.show()
         btnComments.set_active(args.comments)
         btnComments.set_draw_as_radio(True)
         btnComments.connect("activate", self.toggleComments)
-        self.menu.append(btnComments)
+        self.add(btnComments)
 
         btnAbout = Gtk.MenuItem("About")
         btnAbout.show()
         btnAbout.connect("activate", self.showAbout)
-        self.menu.append(btnAbout)
+        self.add(btnAbout)
 
         btnRefresh = Gtk.MenuItem("Refresh")
         btnRefresh.show()
         # the last parameter is for not running the timer
         btnRefresh.connect("activate", self.refresh, True, args.chrome)
-        self.menu.append(btnRefresh)
+        self.add(btnRefresh)
 
         if Version.new_available():
             btnUpdate = Gtk.MenuItem("New Update Available")
             btnUpdate.show()
             btnUpdate.connect('activate', self.showUpdate)
-            self.menu.append(btnUpdate)
+            self.add(btnUpdate)
 
         btnQuit = Gtk.MenuItem("Quit")
         btnQuit.show()
         btnQuit.connect("activate", self.quit)
-        self.menu.append(btnQuit)
+        self.add(btnQuit)
         self.menu.show()
         self.ind.set_menu(self.menu)
 
         if args.firefox == "auto":
             args.firefox = Firefox.default_firefox_profile_path()
         self.refresh(chrome_data_directory=args.chrome, firefox_data_directory=args.firefox)
+
+    def add(self, item):
+        if self.reverse:
+            self.menu.prepend(item)
+        else:
+            self.menu.append(item)
 
     def toggleComments(self, widget):
         """Whether comments page is opened or not"""
@@ -161,7 +168,10 @@ class HackerNewsApp:
         i.signal_id = i.connect('activate', self.open)
         i.hn_id = item['id']
         i.item_id = item['id']
-        self.menu.prepend(i)
+        if self.reverse:
+            self.menu.append(i)
+        else:
+            self.menu.prepend(i)
         i.show()
 
     def refresh(self, widget=None, no_timer=False, chrome_data_directory=None, firefox_data_directory=None):
@@ -207,11 +217,10 @@ class HackerNewsApp:
 def main():
     parser = argparse.ArgumentParser(description='Hacker News in your System Tray')
     parser.add_argument('-v', '--version', action='version', version=Version.current())
-    parser.add_argument('-c', '--comments', dest='comments', action='store_true', help="Load the HN comments link for the article as well")
+    parser.add_argument('-c', '--comments', dest='comments', default=False, action='store_true', help="Load the HN comments link for the article as well")
     parser.add_argument('--chrome', dest='chrome', help="Specify a Google Chrome Profile directory to use for matching chrome history")
     parser.add_argument('--firefox', dest='firefox', help="Specify a Firefox Profile directory to use for matching firefox history. Pass auto to automatically pick the default profile")
-    parser.set_defaults(comments=False)
-    parser.set_defaults(dnt=False)
+    parser.add_argument('-r', '--reverse', dest='reverse', default=False, action='store_true', help="Reverse the order of items. Use if your status bar is at the bottom of the screen")
     args = parser.parse_args()
     indicator = HackerNewsApp(args)
     indicator.run()
