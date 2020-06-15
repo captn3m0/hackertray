@@ -3,6 +3,13 @@ This file will only list released and supported versions, usually skipping over 
 Unreleased
 ==========
 
+4.0.2
+=====
+
+* Adds a --reverse flag for users with bar at the bottom of their screen
+* Uses markup to keep points in fixed-width, so titles are more readable
+* Removes the buggy hover-out behaviour (non-appindicator). You now need to click elsewhere to close the menu
+
 4.0.1
 =====
 
