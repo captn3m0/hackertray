@@ -82,30 +82,5 @@ class Indicator:
         # Show the menu
         self.menu.popup(None, None, None, 0, 0, Gtk.get_current_event_time())
 
-        # Get the location and size of the window
-        mouse_rect = self.menu.get_window().get_frame_extents()
-
-        self.x = mouse_rect.x
-        self.y = mouse_rect.y
-        self.right = self.x + mouse_rect.width
-        self.bottom = self.y + mouse_rect.height
-
-        # Set a timer to poll the menu
-        self.timer = GLib.timeout_add(100, self.check_mouse)
-
-    def check_mouse(self):
-        if not self.menu.get_window().is_visible():
-            return
-
-        # Now check the global mouse coords
-        root = self.menu.get_screen().get_root_window()
-
-        _,x,y,_ = root.get_pointer()
-
-        if (x < (self.x-10)) or (x > self.right) or (y < (self.y+10)) or (y > self.bottom):
-            self.hide_menu()
-        else:
-            return True
-
     def hide_menu(self):
         self.menu.popdown()
