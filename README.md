@@ -117,4 +117,4 @@ On every launch, a request is made to `https://pypi.python.org/pypi/hackertray/j
 
 ## Licence
 
-Licenced under the [MIT Licence](https://nemo.mit-license.org/).
+Licenced under the [MIT Licence](https://nemo.mit-license.org/). See the LICENSE file for complete license text.
