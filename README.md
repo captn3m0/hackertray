@@ -29,7 +29,7 @@ The new flatpak installation is in need of more testing.
 HackerTray is distributed as a python package. Do the following to install:
 
 ```sh
-pipx install hackertray
+pipx install hackertray --system-site-packages
 ```
 
 There is a Flatpak build and submission in progress.
