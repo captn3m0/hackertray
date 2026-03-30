@@ -1,14 +1,24 @@
 # HackerTray
 
-[![HackerTray on PyPi](https://pypip.in/v/hackertray/badge.png)](https://pypi.python.org/pypi/hackertray/)
-[![HackerTray on PyPi](https://pypip.in/d/hackertray/badge.png)](https://pypi.python.org/pypi/hackertray/)
-[![Build Status](https://travis-ci.org/captn3m0/hackertray.png)](https://travis-ci.org/captn3m0/hackertray) [![Coverage Status](https://coveralls.io/repos/github/captn3m0/hackertray/badge.svg?branch=master)](https://coveralls.io/github/captn3m0/hackertray?branch=master)
+[![PyPI - Version](https://img.shields.io/pypi/v/hackertray)](https://pypi.python.org/pypi/hackertray/)
+[![Coverage Status](https://coveralls.io/repos/github/captn3m0/hackertray/badge.svg?branch=master)](https://coveralls.io/github/captn3m0/hackertray?branch=master)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/captn3m0/hackertray/test.yml)
 
 HackerTray is a simple [Hacker News](https://news.ycombinator.com/) Linux application
 that lets you view top HN stories in your System Tray. It uses appindicator where available,
 but provides a Gtk StatusIcon fallback in case AppIndicator is not available.
 
-The inspiration for this came from [Hacker Bar](http://hackerbarapp.com), which is Mac-only.
+The inspiration for this came from [Hacker Bar](https://web.archive.org/web/20131126173924/http://hackerbarapp.com/) (now dead), which was Mac-only.
+
+Over the years, this has been tested across multiple system tray implementations, including:
+
+- Waybar on sway
+- i3bar with i3
+- ElementaryOS
+- KDE Plasma 6.6
+- GNOME 50
+
+The new flatpak installation is in need of more testing.
 
 ## Screenshot
 
@@ -19,38 +29,18 @@ The inspiration for this came from [Hacker Bar](http://hackerbarapp.com), which 
 HackerTray is distributed as a python package. Do the following to install:
 
 ```sh
-sudo pip install hackertray
-OR
-sudo easy_install hackertray
-OR
-#Download Source and cd to it
-sudo python setup.py install
+pipx install hackertray
 ```
 
-After that, you can run `hackertray` from anywhere and it will run. You can
-now add it to your OS dependent session autostart method. In Ubuntu, you can
-access it via:
-
-1.  System > Preferences > Sessions
-    (OR)
-2.  System > Preferences > Startup Applications
-
-depending on your Ubuntu Version. Or put it in `~/.config/openbox/autostart`
-if you are running OpenBox. [Here](http://imgur.com/mnhIzDK) is how the
-configuration should look like in Ubuntu and its derivatives.
+There is a Flatpak build and submission in progress.
 
 ### Upgrade
 
-The latest stable version is [![the one on PyPi](https://pypip.in/v/hackertray/badge.png)](https://pypi.python.org/pypi/hackertray/)
+The latest stable version is 5.0.0.
 
 You can check which version you have installed with `hackertray --version`.
 
-To upgrade, run `pip install -U hackertray`. In some cases (Ubuntu), you might
-need to clear the pip cache before upgrading:
-
-`sudo rm -rf /tmp/pip-build-root/hackertray`
-
-HackerTray will automatically check the latest version on startup, and inform you if there is an update available.
+HackerTray will automatically check the latest version on startup, and inform you if there is an update available on the command line.
 
 ## Options
 
@@ -100,8 +90,8 @@ Note that appindicator is no longer supported in non-Ubuntu distros, because it 
 To develop on hackertray, or to test out experimental versions, do the following:
 
 -   Clone the project
--   Run `(sudo) python setup.py develop` in the hackertray root directory
--   Run `hackertray` with the required command line options from anywhere.
+-   Run `uv venv --system-site-packages`. This is required to allow access to the global pygobject install.
+-   Run `uv run hackertray` with the required command line options
 
 ## Analytics
 
