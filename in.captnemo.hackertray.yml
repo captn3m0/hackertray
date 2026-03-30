@@ -1,0 +1,31 @@
+app-id: in.captnemo.hackertray
+runtime: org.gnome.Platform
+runtime-version: "49"
+sdk: org.gnome.Sdk
+command: hackertray
+
+finish-args:
+  - --share=ipc
+  - --share=network
+  - --socket=x11
+  - --socket=wayland
+  - --talk-name=org.kde.StatusNotifierWatcher
+  - --talk-name=com.canonical.indicator.application
+  - --talk-name=org.ayatana.indicator.application
+  - --filesystem=~/.mozilla/firefox:ro
+  - --filesystem=~/.config/mozilla/firefox:ro
+  - --filesystem=~/.var/app/org.mozilla.firefox/.mozilla/firefox:ro
+  - --filesystem=~/.config/google-chrome:ro
+
+modules:
+  - shared-modules/libappindicator/libappindicator-gtk3-introspection-12.10.json
+
+  - name: hackertray
+    buildsystem: simple
+    build-commands:
+      - pip3 install --no-deps --no-build-isolation --prefix=/app .
+      - install -Dm644 hackertray/data/hacker-tray.png /app/share/icons/hicolor/24x24/apps/hacker-tray.png
+      - install -Dm644 hackertray/data/hacker-tray-light.png /app/share/icons/hicolor/24x24/apps/hacker-tray-light.png
+    sources:
+      - type: dir
+        path: .

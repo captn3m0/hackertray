@@ -42,55 +42,83 @@ class HackerNewsApp:
                 self.db = set()
 
         # create an indicator applet
-        self.ind = AppIndicator.Indicator.new("Hacker Tray", "hacker-tray", AppIndicator.IndicatorCategory.APPLICATION_STATUS )
+        self.ind = AppIndicator.Indicator.new("Hacker Tray", "hacker-tray", AppIndicator.IndicatorCategory.APPLICATION_STATUS)
         self.ind.set_status(AppIndicator.IndicatorStatus.ACTIVE)
-        self.ind.set_icon(self.get_icon_filename("hacker-tray.png"))
+        self.ind.set_icon_theme_path(self._icon_theme_path())
+        icon_name = "hacker-tray-light" if self._is_light_theme() else "hacker-tray"
+        self.ind.set_icon(icon_name)
 
         # create a menu
         self.menu = Gtk.Menu()
 
-        # The default state is false, and it toggles when you click on it
         self.commentState = args.comments
         self.reverse = args.reverse
+        self.chrome_data_directory = args.chrome
 
-        # create items for the menu - refresh, quit and a separator
+        # Resolve firefox: None = not requested, "auto" = detect, else = specific path
+        self.firefox_explicit = args.firefox is not None and args.firefox != "auto"
+        if args.firefox == "auto":
+            self.firefox_data_directory = Firefox.default_firefox_profile_path()
+        else:
+            self.firefox_data_directory = args.firefox
+
+        # create items for the menu - separator, settings, about, refresh, quit
         menuSeparator = Gtk.SeparatorMenuItem()
         menuSeparator.show()
         self.add(menuSeparator)
 
-        btnComments = Gtk.CheckMenuItem.new_with_label("Show Comments")
-        btnComments.connect("toggled", self.toggleComments)
-        self.add(btnComments)
-        btnComments.show()
-        btnComments.set_active(args.comments)
+        # Settings submenu
+        settingsItem = Gtk.MenuItem.new_with_label("Settings")
+        settingsMenu = Gtk.Menu()
+        settingsItem.set_submenu(settingsMenu)
 
-        btnAbout = Gtk.MenuItem("About")
+        btnComments = Gtk.CheckMenuItem.new_with_label("Open Comments")
+        btnComments.set_active(args.comments)
+        btnComments.connect("toggled", self.toggleComments)
+        settingsMenu.append(btnComments)
+        btnComments.show()
+
+        btnReverse = Gtk.CheckMenuItem.new_with_label("Reverse Ordering")
+        btnReverse.set_active(args.reverse)
+        btnReverse.connect("toggled", self.toggleReverse)
+        settingsMenu.append(btnReverse)
+        btnReverse.show()
+
+        # Only show Firefox toggle if --firefox was unset or "auto"
+        if not self.firefox_explicit:
+            btnFirefox = Gtk.CheckMenuItem.new_with_label("Detect Firefox read items")
+            btnFirefox.set_active(self.firefox_data_directory is not None)
+            btnFirefox.connect("toggled", self.toggleFirefox)
+            settingsMenu.append(btnFirefox)
+            btnFirefox.show()
+
+        self.add(settingsItem)
+        settingsItem.show()
+
+        btnAbout = Gtk.MenuItem.new_with_label("About")
         btnAbout.show()
         btnAbout.connect("activate", self.showAbout)
         self.add(btnAbout)
 
-        btnRefresh = Gtk.MenuItem("Refresh")
+        btnRefresh = Gtk.MenuItem.new_with_label("Refresh")
         btnRefresh.show()
-        # the last parameter is for not running the timer
-        btnRefresh.connect("activate", self.refresh, True, args.chrome)
+        btnRefresh.connect("activate", self.refresh, True)
         self.add(btnRefresh)
 
         if Version.new_available():
-            btnUpdate = Gtk.MenuItem("New Update Available")
+            btnUpdate = Gtk.MenuItem.new_with_label("New Update Available")
             btnUpdate.show()
             btnUpdate.connect('activate', self.showUpdate)
             self.add(btnUpdate)
 
-        btnQuit = Gtk.MenuItem("Quit")
+        btnQuit = Gtk.MenuItem.new_with_label("Quit")
         btnQuit.show()
         btnQuit.connect("activate", self.quit)
         self.add(btnQuit)
         self.menu.show()
         self.ind.set_menu(self.menu)
 
-        if args.firefox == "auto":
-            args.firefox = Firefox.default_firefox_profile_path()
-        self.refresh(chrome_data_directory=args.chrome, firefox_data_directory=args.firefox)
+        self.refresh()
 
     def add(self, item):
         if self.reverse:
@@ -101,6 +129,20 @@ class HackerNewsApp:
     def toggleComments(self, widget):
         """Whether comments page is opened or not"""
         self.commentState = widget.get_active()
+
+    def toggleReverse(self, widget):
+        self.reverse = widget.get_active()
+
+    def toggleFirefox(self, widget):
+        if widget.get_active():
+            try:
+                self.firefox_data_directory = Firefox.default_firefox_profile_path()
+            except RuntimeError:
+                print("[+] Could not find Firefox profile")
+                widget.set_active(False)
+                return
+        else:
+            self.firefox_data_directory = None
 
     def showUpdate(self, widget):
         """Handle the update button"""
@@ -115,10 +157,9 @@ class HackerNewsApp:
     # ToDo: Handle keyboard interrupt properly
     def quit(self, widget, data=None):
         """ Handler for the quit button"""
-        l = list(self.db)
+        l = list(self.db)[-200:]
         home = expanduser("~")
 
-        # truncate the file
         with open(home + '/.hackertray.json', 'w+') as file:
             file.write(json.dumps(l))
 
@@ -165,28 +206,28 @@ class HackerNewsApp:
         i.url = item['url']
         tooltip = "{url}\nPosted by {user} {timeago}".format(url=item['url'], user=item['user'], timeago=item['time_ago'])
         i.set_tooltip_text(tooltip)
-        i.signal_id = i.connect('activate', self.open)
         i.hn_id = item['id']
         i.item_id = item['id']
+        i.set_active(visited)
+        i.signal_id = i.connect('activate', self.open)
         if self.reverse:
             self.menu.append(i)
         else:
             self.menu.prepend(i)
         i.show()
-        i.set_active(visited)
 
-    def refresh(self, widget=None, no_timer=False, chrome_data_directory=None, firefox_data_directory=None):
+    def refresh(self, widget=None, no_timer=False):
         """Refreshes the menu """
         try:
             # Create an array of 20 false to denote matches in History
             searchResults = [False]*20
             data = list(reversed(HackerNews.getHomePage()[0:20]))
             urls = [item['url'] for item in data]
-            if(chrome_data_directory):
-                searchResults = self.mergeBoolArray(searchResults, Chrome.search(urls, chrome_data_directory))
+            if self.chrome_data_directory:
+                searchResults = self.mergeBoolArray(searchResults, Chrome.search(urls, self.chrome_data_directory))
 
-            if(firefox_data_directory):
-                searchResults = self.mergeBoolArray(searchResults, Firefox.search(urls, firefox_data_directory))
+            if self.firefox_data_directory:
+                searchResults = self.mergeBoolArray(searchResults, Firefox.search(urls, self.firefox_data_directory))
 
             # Remove all the current stories
             for i in self.menu.get_children():
@@ -206,7 +247,7 @@ class HackerNewsApp:
         finally:
             # Call every 10 minutes
             if not no_timer:
-                GLib.timeout_add(10 * 30 * 1000, self.refresh, widget, no_timer, chrome_data_directory)
+                GLib.timeout_add(10 * 30 * 1000, self.refresh)
 
     # Merges two boolean arrays, using OR operation against each pair
     def mergeBoolArray(self, original, patch):
@@ -214,10 +255,27 @@ class HackerNewsApp:
             original[index] = original[index] or patch[index]
         return original
 
-    def get_icon_filename(self, icon_name):
-        ref = importlib.resources.files('hackertray.data') / 'hacker-tray.png'
-        with importlib.resources.as_file(ref) as path:
-            return str(path)
+    @staticmethod
+    def _icon_theme_path():
+        """Return the icon data dir as a host-accessible path.
+
+        AppIndicator sends this path over D-Bus to the tray host, which runs
+        outside the Flatpak sandbox. Inside a Flatpak, /app/ paths are not
+        accessible from the host, so we translate via /.flatpak-info."""
+        data_dir = str(importlib.resources.files('hackertray.data'))
+        if os.path.exists("/.flatpak-info"):
+            import configparser
+            info = configparser.ConfigParser()
+            info.read("/.flatpak-info")
+            app_path = info.get("Instance", "app-path")
+            data_dir = app_path + data_dir.removeprefix("/app")
+        return data_dir
+
+    @staticmethod
+    def _is_light_theme():
+        settings = Gtk.Settings.get_default()
+        if settings and settings.get_property("gtk-application-prefer-dark-theme"):
+            return False
 
 
 def main():

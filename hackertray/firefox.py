@@ -12,13 +12,22 @@ class Firefox:
     @staticmethod
     def default_firefox_profile_path():
         config_home = os.environ.get("XDG_CONFIG_HOME", str(Path.home() / ".config"))
-        firefox_dir = Path(config_home) / "mozilla" / "firefox"
-        profile_file_path = firefox_dir / "profiles.ini"
-        if not profile_file_path.exists():
+        candidates = [
+            Path(config_home) / "mozilla" / "firefox",
+            Path.home() / ".config" / "mozilla" / "firefox",
+            Path.home() / ".mozilla" / "firefox",
+            Path.home() / ".var" / "app" / "org.mozilla.firefox" / ".mozilla" / "firefox",
+        ]
+        firefox_dir = None
+        for candidate in candidates:
+            if (candidate / "profiles.ini").exists():
+                firefox_dir = candidate
+                break
+        if firefox_dir is None:
             raise RuntimeError("Couldn't find Firefox profiles.ini")
 
         parser = configparser.ConfigParser()
-        parser.read(profile_file_path)
+        parser.read(firefox_dir / "profiles.ini")
 
         # Prefer the active install's locked profile (modern Firefox)
         for section in parser.sections():
@@ -58,14 +67,9 @@ class Firefox:
             os.unlink(tmp_path)
         db = conn.cursor()
 
-        total = db.execute('SELECT COUNT(*) FROM moz_places').fetchone()[0]
-        print(f"[firefox] loaded {total} rows from moz_places")
-
         result = []
         for url in urls:
             db.execute('SELECT url from moz_places WHERE url=:url', {"url": url})
-            found = db.fetchone() is not None
-            print(f"[firefox] {'HIT ' if found else 'MISS'} {url}")
-            result.append(found)
+            result.append(db.fetchone() is not None)
         conn.close()
         return result

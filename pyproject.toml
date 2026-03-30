@@ -21,9 +21,12 @@ Homepage = "https://captnemo.in/hackertray"
 [project.scripts]
 hackertray = "hackertray:main"
 
+[tool.pytest.ini_options]
+testpaths = ["test"]
+
 [tool.setuptools.packages.find]
 where = ["."]
 exclude = ["test*"]
 
 [tool.setuptools.package-data]
-"hackertray.data" = ["hacker-tray.png"]
+"hackertray.data" = ["hacker-tray.png", "hacker-tray-light.png"]
