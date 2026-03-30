@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hackertray"
+version = "5.0.0"
+description = "Hacker News app that sits in your System Tray"
+readme = "README.md"
+license = "MIT"
+authors = [
+    { name = "Nemo", email = "hackertray@captnemo.in" }
+]
+keywords = ["hacker news", "hn", "tray", "system tray", "icon", "hackertray"]
+requires-python = ">=3.11"
+dependencies = []
+
+[project.urls]
+Homepage = "https://captnemo.in/hackertray"
+
+[project.scripts]
+hackertray = "hackertray:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["test*"]
+
+[tool.setuptools.package-data]
+"hackertray.data" = ["hacker-tray.png"]

@@ -1,5 +1,6 @@
 import random
-import requests
+import json
+import urllib.request
 
 urls = [
     'https://node-hnapi.herokuapp.com/'
@@ -12,8 +13,8 @@ class HackerNews:
     def getHomePage():
         random.shuffle(urls)
         for i in urls:
-            r = requests.get(i + "news")
             try:
-                return r.json()
-            except ValueError:
+                with urllib.request.urlopen(i + "news") as r:
+                    return json.loads(r.read())
+            except (ValueError, urllib.error.URLError):
                 continue

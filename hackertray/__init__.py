@@ -1,21 +1,18 @@
 #!/usr/bin/env python
 
 import os
-import requests
+import urllib.error
 import subprocess
+import importlib
+import importlib.resources
 
-if(os.environ.get('TRAVIS') != 'true'):
+if(os.environ.get('CI') != 'true'):
     import gi
     gi.require_version('Gtk', '3.0')
     from gi.repository import Gtk,GLib
     import webbrowser
-
-    try:
-        import appindicator
-    except ImportError:
-        from . import appindicator_replacement as appindicator
-
-    from .appindicator_replacement import get_icon_filename
+    gi.require_version('AppIndicator3', '0.1')
+    from gi.repository import AppIndicator3 as AppIndicator
 
 import json
 import argparse
@@ -45,9 +42,9 @@ class HackerNewsApp:
                 self.db = set()
 
         # create an indicator applet
-        self.ind = appindicator.Indicator("Hacker Tray", "hacker-tray", appindicator.CATEGORY_APPLICATION_STATUS)
-        self.ind.set_status(appindicator.STATUS_ACTIVE)
-        self.ind.set_icon(get_icon_filename("hacker-tray.png"))
+        self.ind = AppIndicator.Indicator.new("Hacker Tray", "hacker-tray", AppIndicator.IndicatorCategory.APPLICATION_STATUS )
+        self.ind.set_status(AppIndicator.IndicatorStatus.ACTIVE)
+        self.ind.set_icon(self.get_icon_filename("hacker-tray.png"))
 
         # create a menu
         self.menu = Gtk.Menu()
@@ -61,12 +58,11 @@ class HackerNewsApp:
         menuSeparator.show()
         self.add(menuSeparator)
 
-        btnComments = Gtk.CheckMenuItem("Show Comments")
+        btnComments = Gtk.CheckMenuItem.new_with_label("Show Comments")
+        btnComments.connect("toggled", self.toggleComments)
+        self.add(btnComments)
         btnComments.show()
         btnComments.set_active(args.comments)
-        btnComments.set_draw_as_radio(True)
-        btnComments.connect("activate", self.toggleComments)
-        self.add(btnComments)
 
         btnAbout = Gtk.MenuItem("About")
         btnAbout.show()
@@ -104,7 +100,7 @@ class HackerNewsApp:
 
     def toggleComments(self, widget):
         """Whether comments page is opened or not"""
-        self.commentState = not self.commentState
+        self.commentState = widget.get_active()
 
     def showUpdate(self, widget):
         """Handle the update button"""
@@ -164,8 +160,8 @@ class HackerNewsApp:
         label.set_selectable(False)
 
         visited = item['history'] or item['id'] in self.db
+        print(f"[ui] {'visited' if visited else 'unvisited'}: {item['url']}")
 
-        i.set_active(visited)
         i.url = item['url']
         tooltip = "{url}\nPosted by {user} {timeago}".format(url=item['url'], user=item['user'], timeago=item['time_ago'])
         i.set_tooltip_text(tooltip)
@@ -177,6 +173,7 @@ class HackerNewsApp:
         else:
             self.menu.prepend(i)
         i.show()
+        i.set_active(visited)
 
     def refresh(self, widget=None, no_timer=False, chrome_data_directory=None, firefox_data_directory=None):
         """Refreshes the menu """
@@ -204,7 +201,7 @@ class HackerNewsApp:
 
                 self.addItem(item)
         # Catch network errors
-        except requests.exceptions.RequestException as e:
+        except urllib.error.URLError as e:
             print("[+] There was an error in fetching news items")
         finally:
             # Call every 10 minutes
@@ -216,6 +213,11 @@ class HackerNewsApp:
         for index, var in enumerate(original):
             original[index] = original[index] or patch[index]
         return original
+
+    def get_icon_filename(self, icon_name):
+        ref = importlib.resources.files('hackertray.data') / 'hacker-tray.png'
+        with importlib.resources.as_file(ref) as path:
+            return str(path)
 
 
 def main():

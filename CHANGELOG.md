@@ -1,7 +1,14 @@
 This file will only list released and supported versions, usually skipping over very minor updates.
 
-Unreleased
-==========
+5.0.0
+=====
+
+* Migrated from setup.py to pyproject.toml
+* Switched from requests to urllib (zero external dependencies)
+* Switched from custom appindicator shim to native AppIndicator3 via GObject introspection
+* Migrated icon loading to importlib.resources
+* Modernized version detection using importlib.metadata
+* Requires Python 3.11+
 
 4.0.2
 =====
