@@ -281,7 +281,7 @@ def _query_urls(db_path: Path, table: str, column: str, urls: list[str]) -> set[
 # ── Public API ────────────────────────────────────────────────────────
 
 
-def discover(home: Path | None = None) -> list[HistoryDB]:
+def discover(home: Path | None = None, platform: str | None = None) -> list[HistoryDB]:
     """Discover all browser history databases on this system.
 
     Returns a list of HistoryDB instances, one per database file found.
@@ -289,9 +289,10 @@ def discover(home: Path | None = None) -> list[HistoryDB]:
     if home is None:
         home = Path.home()
 
+    key = platform or _PLATFORM_KEY
     results: list[HistoryDB] = []
     for schema, label, platform_globs in _BROWSERS:
-        patterns = platform_globs.get(_PLATFORM_KEY, []) if _PLATFORM_KEY else []
+        patterns = platform_globs.get(key, []) if key else []
         for pattern in patterns:
             for db_path in sorted(home.glob(pattern)):
                 if db_path.is_file():

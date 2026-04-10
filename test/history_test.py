@@ -154,74 +154,82 @@ class TestSafariSearch(unittest.TestCase):
 
 
 class TestDiscover(unittest.TestCase):
-    def test_discover_finds_firefox(self):
+    def _setup_and_discover(self, rel_path, fixture, platform):
+        """Create a fake browser profile and run discover."""
         with tempfile.TemporaryDirectory() as tmpdir:
             home = Path(tmpdir) / "home"
-            profile_dir = (
-                home
-                / "Library"
-                / "Application Support"
-                / "Firefox"
-                / "abc12345.default-release"
-            )
-            profile_dir.mkdir(parents=True)
-            shutil.copy(FIXTURES / "places.sqlite", profile_dir / "places.sqlite")
-            dbs = discover(home=home)
-            firefox_dbs = [db for db in dbs if db.label == "Firefox"]
-            self.assertTrue(len(firefox_dbs) >= 1)
-            self.assertEqual(firefox_dbs[0].schema, HistorySchema.FIREFOX)
+            dest = home / rel_path
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy(FIXTURES / fixture, dest)
+            return discover(home=home, platform=platform)
 
-    def test_discover_finds_chrome(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            home = Path(tmpdir) / "home"
-            chrome_dir = (
-                home
-                / "Library"
-                / "Application Support"
-                / "Google"
-                / "Chrome"
-                / "Default"
-            )
-            chrome_dir.mkdir(parents=True)
-            shutil.copy(FIXTURES / "History", chrome_dir / "History")
-            dbs = discover(home=home)
-            chrome_dbs = [db for db in dbs if db.label == "Chrome"]
-            self.assertTrue(len(chrome_dbs) >= 1)
-            self.assertEqual(chrome_dbs[0].schema, HistorySchema.CHROMIUM)
+    def test_discover_finds_firefox_macos(self):
+        dbs = self._setup_and_discover(
+            "Library/Application Support/Firefox/abc12345.default-release/places.sqlite",
+            "places.sqlite", "macos")
+        firefox_dbs = [db for db in dbs if db.label == "Firefox"]
+        self.assertEqual(len(firefox_dbs), 1)
+        self.assertEqual(firefox_dbs[0].schema, HistorySchema.FIREFOX)
+
+    def test_discover_finds_firefox_linux(self):
+        dbs = self._setup_and_discover(
+            ".mozilla/firefox/abc12345.default-release/places.sqlite",
+            "places.sqlite", "linux")
+        firefox_dbs = [db for db in dbs if db.label == "Firefox"]
+        self.assertEqual(len(firefox_dbs), 1)
+        self.assertEqual(firefox_dbs[0].schema, HistorySchema.FIREFOX)
+
+    def test_discover_finds_chrome_macos(self):
+        dbs = self._setup_and_discover(
+            "Library/Application Support/Google/Chrome/Default/History",
+            "History", "macos")
+        chrome_dbs = [db for db in dbs if db.label == "Chrome"]
+        self.assertEqual(len(chrome_dbs), 1)
+        self.assertEqual(chrome_dbs[0].schema, HistorySchema.CHROMIUM)
+
+    def test_discover_finds_chrome_linux(self):
+        dbs = self._setup_and_discover(
+            ".config/google-chrome/Default/History",
+            "History", "linux")
+        chrome_dbs = [db for db in dbs if db.label == "Chrome"]
+        self.assertEqual(len(chrome_dbs), 1)
+        self.assertEqual(chrome_dbs[0].schema, HistorySchema.CHROMIUM)
 
     def test_discover_finds_safari(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            home = Path(tmpdir) / "home"
-            safari_dir = home / "Library" / "Safari"
-            safari_dir.mkdir(parents=True)
-            shutil.copy(FIXTURES / "safari" / "History.db", safari_dir / "History.db")
-            dbs = discover(home=home)
-            safari_dbs = [db for db in dbs if db.label == "Safari"]
-            self.assertTrue(len(safari_dbs) >= 1)
-            self.assertEqual(safari_dbs[0].schema, HistorySchema.SAFARI)
+        dbs = self._setup_and_discover(
+            "Library/Safari/History.db",
+            "safari/History.db", "macos")
+        safari_dbs = [db for db in dbs if db.label == "Safari"]
+        self.assertEqual(len(safari_dbs), 1)
+        self.assertEqual(safari_dbs[0].schema, HistorySchema.SAFARI)
 
     def test_discover_empty_home(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             home = Path(tmpdir) / "emptyhome"
             home.mkdir()
-            dbs = discover(home=home)
-            self.assertEqual(dbs, [])
+            for platform in ("macos", "linux"):
+                dbs = discover(home=home, platform=platform)
+                self.assertEqual(dbs, [])
 
-    def test_discover_multiple_chrome_profiles(self):
+    def test_discover_multiple_chrome_profiles_macos(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             home = Path(tmpdir) / "home"
             for profile in ("Default", "Profile 1"):
-                d = (
-                    home
-                    / "Library"
-                    / "Application Support"
-                    / "Google"
-                    / "Chrome"
-                    / profile
-                )
+                d = home / "Library" / "Application Support" / "Google" / "Chrome" / profile
                 d.mkdir(parents=True)
                 shutil.copy(FIXTURES / "History", d / "History")
-            dbs = discover(home=home)
+            dbs = discover(home=home, platform="macos")
+            chrome_dbs = [db for db in dbs if db.label == "Chrome"]
+            self.assertEqual(len(chrome_dbs), 2)
+
+    def test_discover_multiple_chrome_profiles_linux(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            home = Path(tmpdir) / "home"
+            for profile in ("Default", "Profile 1"):
+                d = home / ".config" / "google-chrome" / profile
+                d.mkdir(parents=True)
+                shutil.copy(FIXTURES / "History", d / "History")
+            dbs = discover(home=home, platform="linux")
             chrome_dbs = [db for db in dbs if db.label == "Chrome"]
             self.assertEqual(len(chrome_dbs), 2)
 

@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/captn3m0/hackertray/badge.svg?branch=master)](https://coveralls.io/github/captn3m0/hackertray?branch=master)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/captn3m0/hackertray/test.yml)
 
-HackerTray is a simple [Hacker News](https://news.ycombinator.com/) application
+HackerTray is a cross-platform [Hacker News](https://news.ycombinator.com/) application
 that lets you view top HN stories in your System Tray. On Linux it uses appindicator where available
 (with a Gtk StatusIcon fallback). On macOS it uses a native status bar menu via pyobjc.
 
