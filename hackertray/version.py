@@ -3,13 +3,14 @@ import urllib.request
 import urllib.error
 from importlib.metadata import version, PackageNotFoundError
 
+
 class Version:
     PYPI_URL = "https://pypi.python.org/pypi/hackertray/json"
 
     @staticmethod
     def latest():
         with urllib.request.urlopen(Version.PYPI_URL) as r:
-            return json.loads(r.read())['info']['version']
+            return json.loads(r.read())["info"]["version"]
 
     @staticmethod
     def current():
@@ -24,7 +25,9 @@ class Version:
         latest = Version.latest()
         current = Version.current()
         try:
-            if pkg_resources.parse_version(latest) > pkg_resources.parse_version(current):
+            if pkg_resources.parse_version(latest) > pkg_resources.parse_version(
+                current
+            ):
                 print("[+] New version " + latest + " is available")
                 return True
             else:
