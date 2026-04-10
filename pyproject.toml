@@ -13,7 +13,10 @@ authors = [
 ]
 keywords = ["hacker news", "hn", "tray", "system tray", "icon", "hackertray"]
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "pyobjc-core>=10.0; sys_platform == 'darwin'",
+    "pyobjc-framework-Cocoa>=10.0; sys_platform == 'darwin'",
+]
 
 [project.urls]
 Homepage = "https://captnemo.in/hackertray"
@@ -30,3 +33,9 @@ exclude = ["test*"]
 
 [tool.setuptools.package-data]
 "hackertray.data" = ["hacker-tray.png", "hacker-tray-light.png"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "pytest-cov>=7.1.0",
+]

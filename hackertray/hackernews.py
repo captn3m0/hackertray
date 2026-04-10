@@ -2,13 +2,10 @@ import random
 import json
 import urllib.request
 
-urls = [
-    'https://node-hnapi.herokuapp.com/'
-]
+urls = ["https://node-hnapi.herokuapp.com/"]
 
 
 class HackerNews:
-
     @staticmethod
     def getHomePage():
         random.shuffle(urls)

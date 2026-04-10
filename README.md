@@ -4,9 +4,9 @@
 [![Coverage Status](https://coveralls.io/repos/github/captn3m0/hackertray/badge.svg?branch=master)](https://coveralls.io/github/captn3m0/hackertray?branch=master)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/captn3m0/hackertray/test.yml)
 
-HackerTray is a simple [Hacker News](https://news.ycombinator.com/) Linux application
-that lets you view top HN stories in your System Tray. It uses appindicator where available,
-but provides a Gtk StatusIcon fallback in case AppIndicator is not available.
+HackerTray is a cross-platform [Hacker News](https://news.ycombinator.com/) application
+that lets you view top HN stories in your System Tray. On Linux it uses appindicator where available
+(with a Gtk StatusIcon fallback). On macOS it uses a native status bar menu via pyobjc.
 
 The inspiration for this came from [Hacker Bar](https://web.archive.org/web/20131126173924/http://hackerbarapp.com/) (now dead), which was Mac-only.
 
@@ -47,34 +47,19 @@ HackerTray will automatically check the latest version on startup, and inform yo
 HackerTray accepts its various options via the command line. Run `hackertray -h` to see all options. Currently the following switches are supported:
 
 1.  `-c`: Enables comments support. Clicking on links will also open the comments page on HN. Can be switched off via the UI, but the setting is not remembered.
-2.  `--chrome PROFILE-PATH`: Specifying a profile path to a chrome directory will make HackerTray read the Chrome History file to mark links as read. Links are checked once every 5 minutes, which is when the History file is copied (to override the lock in case Chrome is open), searched using sqlite and deleted. This feature is still experimental.
-3.  `--firefox PROFILE-PATH`: Specify path to a firefox profile directory. HackerTray will read your firefox history from this profile, and use it to mark links as read. Pass `auto` as PROFILE-PATH to automatically read the default profile and use that.
-4. `--reverse` (or `-r`). Switches the order for the elements in the menu, so Quit is at top. Use this if your system bar is at the bottom of the screen.
+2.  `--reverse` (or `-r`): Switches the order for the elements in the menu, so Quit is at top. Use this if your system bar is at the bottom of the screen.
+3.  `--verbose`: Enable debug logging.
 
-Note that the `--chrome` and `--firefox` options are independent, and can be used together. However, they cannot be specified multiple times (so reading from 2 chrome profiles is not possible).
+Browser history is automatically discovered from all installed browsers (Chrome, Firefox, Safari, Brave, Edge, Arc, and many more). All profiles are searched.
 
-### Google Chrome Profile Path
-
-Where your Profile is stored depends on [which version of chrome you are using](https://chromium.googlesource.com/chromium/src.git/+/62.0.3202.58/docs/user_data_dir.md#linux):
-
-- [Chrome Stable] `~/.config/google-chrome/Default`
-- [Chrome Beta] `~/.config/google-chrome-beta/Default`
-- [Chrome Dev] `~/.config/google-chrome-unstable/Default`
-- [Chromium] `~/.config/chromium/Default`
-
-Replace `Default` with `Profile 1`, `Profile 2` or so on if you use multiple profiles on Chrome. Note that the `--chrome` option accepts a `PROFILE-PATH`, not the History file itself. Also note that sometimes `~` might not be set, so you might need to use the complete path (such as `/home/nemo/.config/google-chrome/Default/`).
-
-### Firefox Profile Path
-
-The default firefox profile path is `~/.mozilla/firefox/*.default`, where `*` denotes a random 8 digit string. You can also read `~/.mozilla/firefox/profiles.ini` to get a list of profiles. Alternatively, just pass `auto` and HackerTray will pick the default profile automatically.
+Options can also be set in `~/.config/hackertray/hackertray.ini` (or `~/.config/hackertray.ini`):
 
 ## Features
 
 1.  Minimalist Approach to HN
 2.  Opens links in your default browser
-3.  Remembers which links you opened, even if you opened them outside of HackerTray
-4.  Shows Points/Comment count in a simple format
-5.  Reads your Google Chrome/Firefox History file to determine which links you've already read (even if you may not have opened them via HackerTray)
+3.  Shows Points/Comment count in a simple format
+4.  Reads your browser history to mark which links you've already visited
 
 ### Troubleshooting
 
@@ -101,7 +86,8 @@ On every launch, a request is made to `https://pypi.python.org/pypi/hackertray/j
 
 ## Credits
 
--   Mark Rickert for [Hacker Bar](http://hackerbarapp.com/) (No longer active)
+-   Mark Rickert for [Hacker Bar](https://github.com/MohawkApps/Hacker-Bar) (No longer active, MIT License). The macOS port references Hacker Bar's original design.
+-   [browser-history](https://github.com/browser-history/browser-history) (Apache 2.0) — browser history discovery patterns were informed by this project.
 -   [Giridaran Manivannan](https://github.com/ace03uec) for troubleshooting instructions.
 -   [@cheeaun](https://github.com/cheeaun) for the [Unofficial Hacker News API](https://github.com/cheeaun/node-hnapi/)
 

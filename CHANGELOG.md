@@ -3,12 +3,11 @@ This file will only list released and supported versions, usually skipping over 
 5.0.0
 =====
 
-* Migrated from setup.py to pyproject.toml
+* Upgrades for modern python (3.11+), using uv and pyproject.toml.
 * Switched from requests to urllib (zero external dependencies)
-* Switched from custom appindicator shim to native AppIndicator3 via GObject introspection
-* Migrated icon loading to importlib.resources
-* Modernized version detection using importlib.metadata
-* Requires Python 3.11+
+* Switched to AppIndicator3 on Linux
+* Adds MacOS support
+* Improved history scanning, works for dozens of browsers
 
 4.0.2
 =====
